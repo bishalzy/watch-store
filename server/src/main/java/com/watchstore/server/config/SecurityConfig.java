@@ -25,6 +25,7 @@ public class SecurityConfig {
             .requestMatchers("/images/**").permitAll()
             .requestMatchers("/api/checkout").permitAll()
             .requestMatchers("/api/orders/user/**").permitAll()
+            .requestMatchers("/api/chat", "/api/chat/**").permitAll()
             .anyRequest().authenticated());
         // .httpBasic(Customizer.withDefaults()); // optional: enable basic auth if needed
 

@@ -8,6 +8,8 @@ import { useAuthStore } from "./store/authStore";
 import { useUserStore } from "./store/userStore";
 import { validateToken } from "./services/api/auth/authAPI";
 
+import AIChatWidget from "./components/ui/AIChat/AIChatWidget";
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -62,6 +64,7 @@ function App() {
         <Outlet />
       </div>
       <Footer />
+      <AIChatWidget />
     </>
   );
 }

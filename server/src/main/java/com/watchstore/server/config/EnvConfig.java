@@ -13,5 +13,8 @@ public class EnvConfig {
     System.setProperty("app.admin.password", dotenv.get("ADMIN_PASSWORD"));
     System.setProperty("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
     System.setProperty("SECURE_COOKIE", dotenv.get("SECURE_COOKIE"));
+    if (dotenv.get("GEMINI_KEY") != null) {
+      System.setProperty("GEMINI_KEY", dotenv.get("GEMINI_KEY"));
+    }
   }
 }
