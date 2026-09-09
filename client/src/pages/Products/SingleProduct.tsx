@@ -56,7 +56,7 @@ export default function SingleProductPage() {
                 <h4 className="text-[14px] md:text-[16px]">Quantity</h4>
               </span>
               <span className="flex justify-between items-center">
-                <p className="text-3xl md:text-4xl font-semibold max-w-[130px] overflow-style">{product.price}</p>
+                <p className="text-3xl md:text-4xl font-semibold max-w-[180px] overflow-style">Rs. {product.price}</p>
                 <span className="text-2xl md:text-3xl font-semibold text-left max-w-[80px] overflow-style">{product.quantity}</span>
               </span>
             </div>

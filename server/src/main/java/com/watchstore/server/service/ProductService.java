@@ -36,7 +36,7 @@ public class ProductService {
     this.orderItemRepository = orderItemRepository;
   }
 
-  private final String uploadDirectory = "/home/asus/Pictures";
+  private final String uploadDirectory = "/home/bishal/Downloads";
 
   public void createProductWithInventory(ProductRequest productRequest) {
     MultipartFile file = productRequest.getProductImage();
