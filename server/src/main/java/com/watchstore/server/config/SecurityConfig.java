@@ -25,8 +25,8 @@ public class SecurityConfig {
             .requestMatchers("/images/**").permitAll()
             .requestMatchers("/api/checkout").permitAll()
             .requestMatchers("/api/orders/user/**").permitAll()
-            .anyRequest().authenticated())
-        .httpBasic(Customizer.withDefaults()); // optional: enable basic auth if needed
+            .anyRequest().authenticated());
+        // .httpBasic(Customizer.withDefaults()); // optional: enable basic auth if needed
 
     return http.build();
   }

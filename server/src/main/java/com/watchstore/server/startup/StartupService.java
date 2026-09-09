@@ -58,7 +58,7 @@ public class StartupService {
       newAdmin.setRole("ADMIN");
       newAdmin.setSecurityCode("good_code");
       userRepository.save(newAdmin);
-      System.out.println("Created new admin" + adminEmail);
+      System.out.println("Created new admin " + adminEmail);
     });
   }
 }

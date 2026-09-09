@@ -28,7 +28,7 @@ public class ProductDTO {
     this.dateAdded = inventory.getDateAdded();
   }
 
-  public Long getID() {
+  public Long getId() {
     return this.id;
   }
 
