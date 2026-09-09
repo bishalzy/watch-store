@@ -116,7 +116,7 @@ export default function Navbar() {
           <input
             onChange={(e) => setSearchedValue(e.target.value)}
             ref={searchBarRef}
-            className={`${isSearchBarVisible ? "w-[50%] md:w-[65%] xl-[70%]" : "w-0 px-0"
+            className={`${isSearchBarVisible ? "w-[50%] md:w-[65%] xl:w-[50%]" : "w-0 px-0"
               } h-6 text-black px-2 outline-1 transition-all duration-300 absolute right-[160px] md:right-[180px] lg:right-[260px] xl:right-[320px]`}
             placeholder="Search"
           />
