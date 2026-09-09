@@ -8,7 +8,7 @@ import { IoSend, IoTrashOutline, IoSparkles } from "react-icons/io5";
 const SUGGESTIONS = [
   "Water-resistant sports watches",
   "Elegant dress watch for formal wear",
-  "Watches under $200",
+  "Watches under Rs. 20,000",
   "Classic everyday leather strap watch",
 ];
 
@@ -113,7 +113,7 @@ export default function AIChatWindow() {
     <div
       className="fixed bottom-20 right-4 md:right-8 z-50 w-[92vw] sm:w-[420px] md:w-[470px] h-[580px] max-h-[82vh] bg-[#1a1a1a] text-white border-2 border-white/60 rounded-sm shadow-2xl flex flex-col overflow-hidden animate-in fade-in duration-200"
       role="dialog"
-      aria-label="AI Watch Concierge Chat"
+      aria-label="AI Watch Assistance Chat"
     >
       {/* Header - Matching store SidePanelContainer style */}
       <div className="flex items-center justify-between px-5 py-3.5 bg-black border-b-2 border-b-white">
@@ -123,7 +123,7 @@ export default function AIChatWindow() {
           </span>
           <div>
             <h2 className="text-white text-sm md:text-base uppercase font-bold tracking-wider">
-              AI Watch Concierge
+              AI Watch Assistance
             </h2>
             <span className="text-[11px] text-[#c7c7c7] uppercase tracking-wide block">
               Powered by Gemini
@@ -242,7 +242,7 @@ export default function AIChatWindow() {
           type="text"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Ask in plain English (e.g., diver watch under $300)..."
+          placeholder="Ask in plain English (e.g., diver watch under Rs. 15,000)..."
           disabled={isLoading}
           className="flex-1 bg-black text-white text-sm px-3.5 py-2.5 rounded-sm border-2 border-white/40 focus:border-[#1bddf3] focus:outline-none placeholder-gray-500 disabled:opacity-50 transition-colors"
         />

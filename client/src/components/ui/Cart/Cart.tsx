@@ -43,8 +43,8 @@ export function Cart() {
                           <h1 className="text-white font-semibold text-[18px] md:text-2xl max-w-[250px] overflow-style">{item.name}</h1>
                           <span className="text-gray-400 text-[12px] md:text-sm">{item.category}</span>
                           <div className="flex gap-2 items-end overflow-style">
-                            <span className="md:text-2xl font-semibold">{item.price * item.quantity}</span>
-                            <span className="text-[12px] md:text-sm text-gray-400">{item.price} per unit</span>
+                            <span className="md:text-2xl font-semibold">Rs. {item.price * item.quantity}</span>
+                            <span className="text-[12px] md:text-sm text-gray-400">Rs. {item.price} per unit</span>
                           </div>
                         </div>
                         <div className="flex flex-col pr-2 md:pr-0">

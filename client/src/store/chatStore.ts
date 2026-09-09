@@ -17,7 +17,7 @@ interface ChatState {
 const INITIAL_GREETING: ChatMessage = {
   id: "greeting",
   sender: "ai",
-  text: "Hello! I am your AI Watch Concierge. Tell me what kind of watch you're looking for (e.g., style, occasion, budget, or features), and I'll find the best matches from our collection.",
+  text: "Hello! I am your AI Watch Assistance. Tell me what kind of watch you're looking for (e.g., style, occasion, budget, or features), and I'll find the best matches from our collection.",
   timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
 };
 

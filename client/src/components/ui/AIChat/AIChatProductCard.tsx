@@ -69,7 +69,7 @@ export default function AIChatProductCard({ product }: AIChatProductCardProps) {
             {product.name}
           </h4>
           <div className="flex items-center justify-between mt-1">
-            <span className="text-white font-extrabold text-sm">${product.price.toFixed(2)}</span>
+            <span className="text-white font-extrabold text-sm">Rs. {product.price.toFixed(2)}</span>
             <span
               className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm border font-semibold ${
                 isOutOfStock

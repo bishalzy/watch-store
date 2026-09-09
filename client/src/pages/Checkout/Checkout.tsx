@@ -156,9 +156,9 @@ export default function Checkout() {
                         <span className="font-semibold max-w-[200px] whitespace-nowrap overflow-x-auto">{item.name}</span>
                         <span className="text-[14px] text-gray-400">Quantity: <span className="text-white font-semibold">{item.quantity}</span></span>
                       </div>
-                      <div className="flex flex-col items-end pr-2 max-w-[100px]">
-                        <span className="max-w-full whitespace-nowrap overflow-x-auto font-bold">{item.price * item.quantity}</span>
-                        {item.quantity > 1 && <span className="text-[14px] text-gray-400 max-w-full whitespace-nowrap overflow-x-auto">{item.price} each</span>}
+                      <div className="flex flex-col items-end pr-2 max-w-[120px]">
+                        <span className="max-w-full whitespace-nowrap overflow-x-auto font-bold">Rs. {item.price * item.quantity}</span>
+                        {item.quantity > 1 && <span className="text-[14px] text-gray-400 max-w-full whitespace-nowrap overflow-x-auto">Rs. {item.price} each</span>}
                       </div>
                     </div>
                   </div>
@@ -168,7 +168,7 @@ export default function Checkout() {
           </div>
           <div className="flex justify-between">
             <span className="text-white text-2xl">Total</span>
-            <div className="max-w-[200px] overflow-style font-semibold text-2xl">{totalAmount.toFixed(2)}</div>
+            <div className="max-w-[200px] overflow-style font-semibold text-2xl">Rs. {totalAmount.toFixed(2)}</div>
           </div>
         </div>
       </div>

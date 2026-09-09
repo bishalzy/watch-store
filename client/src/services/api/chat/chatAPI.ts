@@ -10,7 +10,7 @@ export async function sendChatMessage(request: ChatRequestDTO): Promise<ChatResp
     if (axios.isAxiosError(error)) {
       console.error("Chat API error:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || "Failed to get a response from AI Concierge. Please try again."
+        error.response?.data?.message || "Failed to get a response from AI Assistance. Please try again."
       );
     }
     console.error("Unexpected chat error:", error);

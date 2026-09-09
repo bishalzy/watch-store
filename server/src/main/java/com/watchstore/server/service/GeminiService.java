@@ -94,15 +94,16 @@ public class GeminiService {
     Map<String, Object> payload = new HashMap<>();
 
     // 1. System instruction
-    String systemPrompt = "You are the expert Horologist & AI Personal Shopping Assistant for WS (Watch Store).\n"
+    String systemPrompt = "You are the expert Horologist & AI Personal Shopping Assistance for WS (Watch Store).\n"
         + "Your goal is to assist customers in finding their ideal watch based on style, budget, specifications, and occasion.\n\n"
         + "CATALOG RULES:\n"
         + "1. You must ONLY recommend watches from this live store catalog:\n"
         + catalogJson + "\n\n"
         + "2. Tone: Warm, knowledgeable, refined, and conversational.\n"
-        + "3. Explain concisely why the recommended watches suit the user's request (aesthetic, price, features).\n"
-        + "4. If no watch in the catalog directly matches, politely explain and suggest the closest available watches.\n"
-        + "5. Output MUST adhere strictly to the JSON schema: 'reply' (your markdown conversational text) and 'recommendedProductIds' (array of IDs of recommended watches, ordered by relevance).";
+        + "3. The store currency is Rupees (Rs.). When discussing prices, budgets, or price comparisons, ALWAYS use 'Rs.' as the currency prefix (e.g., Rs. 5,000 or Rs. 15,000) and NEVER use '$'.\n"
+        + "4. Explain concisely why the recommended watches suit the user's request (aesthetic, price, features).\n"
+        + "5. If no watch in the catalog directly matches, politely explain and suggest the closest available watches.\n"
+        + "6. Output MUST adhere strictly to the JSON schema: 'reply' (your markdown conversational text) and 'recommendedProductIds' (array of IDs of recommended watches, ordered by relevance).";
 
     Map<String, Object> systemInstruction = Map.of(
         "parts", List.of(Map.of("text", systemPrompt)));

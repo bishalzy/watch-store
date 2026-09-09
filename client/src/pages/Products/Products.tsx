@@ -225,7 +225,7 @@ export default function Products() {
                         <h3 className="text-[#c7c7c7] text-sm">Quantity</h3>
                         <h1 className="font-semibold text-lg max-w-[50px] overflow-x-auto">{product.quantity}</h1>
                       </span>
-                      <h1 className="font-bold text-2xl md:text-3xl max-w-[90px] overflow-x-auto whitespace-nowrap">{product.price}</h1>
+                      <h1 className="font-bold text-2xl md:text-3xl max-w-[140px] overflow-x-auto whitespace-nowrap">Rs. {product.price}</h1>
                     </div>
                   </div>
                 </Link>
