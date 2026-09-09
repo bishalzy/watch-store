@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
-    is_admin TINYINT(1) NOT NULL
+    role VARCHAR(255) NOT NULL,
+    security_code VARCHAR(255) NOT NULL DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS product_category (
@@ -17,6 +18,7 @@ CREATE TABLE IF NOT EXISTS products (
     price DOUBLE NOT NULL,
     category_id BIGINT NOT NULL,
     description TEXT NOT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
     image VARCHAR(255) NOT NULL,
     CONSTRAINT fk_products_category 
       FOREIGN KEY (category_id) 
