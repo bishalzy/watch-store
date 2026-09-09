@@ -121,14 +121,9 @@ export default function AIChatWindow() {
           <span className="text-[#1bddf3] text-lg">
             <IoSparkles />
           </span>
-          <div>
-            <h2 className="text-white text-sm md:text-base uppercase font-bold tracking-wider">
-              AI Watch Assistance
-            </h2>
-            <span className="text-[11px] text-[#c7c7c7] uppercase tracking-wide block">
-              Powered by Gemini
-            </span>
-          </div>
+          <h2 className="text-white text-sm md:text-base uppercase font-bold tracking-wider">
+            AI Watch Assistance
+          </h2>
         </div>
 
         <div className="flex items-center gap-2">
