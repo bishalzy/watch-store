@@ -20,9 +20,9 @@ export default function Checkout() {
     checkoutItems,
     dropLocation,
     phoneNumber,
-    cardNumber,
-    cvv,
-    expiry,
+    // cardNumber,
+    // cvv,
+    // expiry,
     checkoutFormErrorFields,
     setCheckoutItems,
     clearCheckoutFormError,
@@ -74,10 +74,10 @@ export default function Checkout() {
 
     const validationError = validateCheckoutForm({
       dropLocation,
-      cardNumber,
       phoneNumber,
-      cvv,
-      expiry
+      // cardNumber,
+      // cvv,
+      // expiry
     })
 
     if (isValidationError(validationError, setCheckoutFormError)) return;
@@ -117,9 +117,9 @@ export default function Checkout() {
       allFormValues: {
         dropLocation,
         phoneNumber,
-        cardNumber,
-        expiry,
-        cvv
+        // cardNumber,
+        // expiry,
+        // cvv
       },
       formValueSetter,
       validateFunction: validateCheckoutForm,
@@ -172,7 +172,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      <div className="px-0 md:px-4 md:component-x-axis-padding rounded-sm h-[550px] mt-10 md:mt-0" style={{
+      <div className="px-0 md:px-4 md:component-x-axis-padding rounded-sm max-h-[550px] mt-10 md:mt-0 py-2" style={{
         boxShadow: "-3px 0 12px 4px rgb(0, 0, 0, 0.9)",
       }}>
         <h1 className="text-2xl md:text-3xl font-semibold">Shipping Information</h1>
@@ -207,6 +207,7 @@ export default function Checkout() {
                   onChange={handleCheckoutFieldOnChange}
                 />
               </FormFieldWrapper>
+              {/*
               <FormFieldWrapper
                 id="card-number"
                 label="Card Number"
@@ -262,11 +263,16 @@ export default function Checkout() {
                   />
                 </FormFieldWrapper>
               </div>
+                */}
             </div>
 
-            {generalError && <div className="text-red-600 text-center font-semibold">{generalError}</div>}
+            {generalError || checkoutAPIError && (
+              <div className="text-red-600 text-center font-semibold">
+                {generalError ?? checkoutAPIError}
+              </div>
+            )}
 
-            <Button textValue={`Pay ${totalAmount.toFixed(2)}`} className="defaultButtonStyle w-full mb-4" />
+            <Button textValue={`Pay with Khalti ${totalAmount.toFixed(2)}`} className="defaultButtonStyle w-full mb-4" />
           </Form>
         </div>
       </div>
