@@ -11,5 +11,4 @@ public class ServerApplication {
     EnvConfig.loadEnv();
     SpringApplication.run(ServerApplication.class, args);
   }
-
 }

@@ -6,8 +6,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+  private final StorageProperties storageProperties;
+
+  public WebConfig(StorageProperties storageProperties) {
+    this.storageProperties = storageProperties;
+  }
+
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/images/**").addResourceLocations("file:/home/bishal/Downloads/");
+    String location = storageProperties.getDir().endsWith("/")
+        ? storageProperties.getDir()
+        : storageProperties.getDir() + "/";
+    registry.addResourceHandler("/images/**").addResourceLocations("file:" + location);
   }
 }

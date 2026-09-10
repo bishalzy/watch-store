@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.watchstore.server.config.StorageProperties;
 import com.watchstore.server.dto.product.ProductDTO;
 import com.watchstore.server.dto.product.ProductRequest;
 import com.watchstore.server.exceptions.BadRequestException;
@@ -27,23 +28,24 @@ public class ProductService {
   private final InventoryRepository inventoryRepository;
   private final CategoryRepository categoryRepository;
   private final OrderItemRepository orderItemRepository;
+  private final StorageProperties storageProperties;
 
   public ProductService(ProductRepository productRepository, InventoryRepository inventoryRepository,
-      CategoryRepository categoryRepository, OrderItemRepository orderItemRepository) {
+      CategoryRepository categoryRepository, OrderItemRepository orderItemRepository,
+      StorageProperties storageProperties) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.inventoryRepository = inventoryRepository;
     this.orderItemRepository = orderItemRepository;
+    this.storageProperties = storageProperties;
   }
-
-  private final String uploadDirectory = "/home/bishal/Downloads";
 
   public void createProductWithInventory(ProductRequest productRequest) {
     MultipartFile file = productRequest.getProductImage();
     String randomFileName;
 
     try {
-      randomFileName = FileStorageUtil.saveFile(file, uploadDirectory);
+      randomFileName = FileStorageUtil.saveFile(file, storageProperties.getDir());
     } catch (IllegalStateException | IOException e) {
       throw new RuntimeException(e.getMessage());
     }
@@ -80,8 +82,8 @@ public class ProductService {
 
     try {
       if (file != null && !file.isEmpty()) {
-        FileStorageUtil.deleteFile(existingProduct.getImage(), uploadDirectory);
-        randomFileName = FileStorageUtil.saveFile(file, uploadDirectory);
+        FileStorageUtil.deleteFile(existingProduct.getImage(), storageProperties.getDir());
+        randomFileName = FileStorageUtil.saveFile(file, storageProperties.getDir());
         existingProduct.setImage(randomFileName);
       }
     } catch (IllegalStateException | IOException e) {
@@ -120,7 +122,7 @@ public class ProductService {
       String imagePath = product.getImage();
 
       try {
-        FileStorageUtil.deleteFile(imagePath, uploadDirectory);
+        FileStorageUtil.deleteFile(imagePath, storageProperties.getDir());
       } catch (Exception e) {
         System.err.println("Failed to delete image file: " + imagePath);
       }

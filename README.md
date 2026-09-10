@@ -86,6 +86,9 @@ The database schema and tables will be automatically initialized by Spring Boot 
    KHALTI_BASE_URL=https://dev.khalti.com/api/v2
    KHALTI_RETURN_URL=http://localhost:5173/checkout/verify # Should match frontend's URL and route
    KHALTI_WEBSITE_URL=http://localhost:5173
+
+   # Upload directory for images. Should be a valid directory in your PC.
+   UPLOAD_DIR=images_upload_directory
    ```
 4. Build and start the backend service:
    ```bash

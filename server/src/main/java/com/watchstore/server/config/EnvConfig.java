@@ -30,5 +30,8 @@ public class EnvConfig {
     if (dotenv.get("GEMINI_MODEL") != null) {
       System.setProperty("GEMINI_MODEL", dotenv.get("GEMINI_MODEL"));
     }
+    if (dotenv.get("UPLOAD_DIR") != null) {
+      System.setProperty("app.upload.dir", dotenv.get("UPLOAD_DIR"));
+    }
   }
 }
