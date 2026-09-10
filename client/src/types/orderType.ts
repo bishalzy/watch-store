@@ -11,5 +11,6 @@ export interface OrderResponseDTO {
   phoneNumber: string;
   dropLocation: string;
   createdAt: string;
+  status: "PENDING" | "COMPLETED" | "FAILED";
   orderItems: OrderItemsDTO[];
 }

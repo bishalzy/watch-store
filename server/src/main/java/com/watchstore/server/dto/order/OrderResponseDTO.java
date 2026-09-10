@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.watchstore.server.model.Order;
+import com.watchstore.server.model.OrderStatus;
 
 public class OrderResponseDTO {
   private long orderId;
   private String dropLocation;
   private String phoneNumber;
   private LocalDateTime createdAt;
+  private OrderStatus status;
   private List<OrderItemDTO> items;
 
   public OrderResponseDTO() {
@@ -21,6 +23,7 @@ public class OrderResponseDTO {
     this.dropLocation = order.getDropLocation();
     this.phoneNumber = order.getPhoneNumber();
     this.createdAt = order.getCreatedAt();
+    this.status = order.getStatus();
     this.items = order.getItems().stream().map(OrderItemDTO::new).collect(Collectors.toList());
   }
 
@@ -38,6 +41,10 @@ public class OrderResponseDTO {
 
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
+  }
+
+  public OrderStatus getStatus() {
+    return this.status;
   }
 
   public List<OrderItemDTO> getOrderItems() {

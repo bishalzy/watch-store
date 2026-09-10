@@ -19,6 +19,7 @@ export default function Order() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [fetchError, setFetchError] = React.useState<string | null>(null);
   const itemsPerPage = 5;
+  const totalColSpanValue = 8;
 
   function getFuzzyFilteredOrders(orders: OrderResponseDTO[], searchQuery: string) {
     if (!searchQuery.trim()) return orders;
@@ -163,6 +164,7 @@ export default function Order() {
                   <th className="p-2">Date (D/M/Y)</th>
                   <th className="p-2">Time (24h)</th>
                   <th className="p-2">Total</th>
+                  <th className="p-2">Status</th>
                   <th className="p-2 w-[200px]">Action</th>
                 </tr>
               </thead>
@@ -187,6 +189,15 @@ export default function Order() {
                             <td className="p-2">{new Date(order.createdAt).toLocaleTimeString()}</td>
                             <td className="p-2">{totalPrice}</td>
                             <td className="p-2">
+                              <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                                order.status === "COMPLETED" ? "bg-green-600" :
+                                order.status === "FAILED" ? "bg-red-600" :
+                                "bg-yellow-600"
+                              }`}>
+                                {order.status}
+                              </span>
+                            </td>
+                            <td className="p-2">
                               <button
                                 onClick={() => toggleShowOrderItems(order.orderID)}
                                 className="border px-2 text-sm md:text-base md:px-4 md:py-2 hover:bg-white hover:text-black duration-200">
@@ -196,7 +207,7 @@ export default function Order() {
                           </tr>
                           {expandedOrderId === order.orderID && (
                             <tr>
-                              <td colSpan={role === ROLES.ADMIN ? 7 : 6} className="p-4">
+                              <td colSpan={role === ROLES.ADMIN ? totalColSpanValue : totalColSpanValue - 1} className="p-4">
                                 <div className="grid grid-cols-[2fr_1fr] border-b">
                                   <div className="">
                                     <strong>Items:</strong>
