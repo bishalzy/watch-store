@@ -3,7 +3,6 @@ package com.watchstore.server.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +22,7 @@ public class SecurityConfig {
             .requestMatchers("/api/products", "/api/products/**").permitAll()
             .requestMatchers("/api/product-category").permitAll()
             .requestMatchers("/images/**").permitAll()
-            .requestMatchers("/api/checkout").permitAll()
+            .requestMatchers("/api/checkout/**").permitAll()
             .requestMatchers("/api/orders/user/**").permitAll()
             .requestMatchers("/api/chat", "/api/chat/**").permitAll()
             .anyRequest().authenticated());
