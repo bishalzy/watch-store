@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, useLocation } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/Error/ErrorPage";
@@ -11,6 +11,7 @@ import SingleProductPage from "../pages/Products/SingleProduct";
 import Checkout from "../pages/Checkout/Checkout";
 import CheckoutSuccess from "../pages/Checkout/CheckoutSuccess";
 import Order from "../pages/Profile/order/Order";
+import CheckoutVerify from "../pages/Checkout/CheckoutVerify";
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -33,7 +34,8 @@ export default function Router() {
             ],
           },
           { path: "/checkout", element: <Checkout /> },
-          { path: "/checkout-success", element: <CheckoutSuccess /> }
+          { path: "/checkout-success", element: <CheckoutSuccess /> },
+          { path: "/checkout/verify", element: <CheckoutVerify /> }
         ],
       },
     ],

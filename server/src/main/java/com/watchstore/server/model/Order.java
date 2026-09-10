@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +26,6 @@ public class Order {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  // FK to user
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
   private User user;
@@ -35,16 +36,21 @@ public class Order {
   @Column(name = "phone_number", nullable = false, length = 20)
   private String phoneNumber;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status", nullable = false, length = 20)
+  private OrderStatus status = OrderStatus.PENDING;
+
+  @Column(name = "pidx", length = 50)
+  private String pidx;
+
   @Column(name = "created_at", columnDefinition = "DATETIME", updatable = false)
   @CreationTimestamp
   private LocalDateTime createdAt;
 
-  // One order can have multiple order items
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
   private List<OrderItem> items = new ArrayList<>();
 
   public Order() {
-
   }
 
   public Order(User user, String dropLocation, String phoneNumber) {
@@ -67,6 +73,22 @@ public class Order {
 
   public String getPhoneNumber() {
     return phoneNumber;
+  }
+
+  public OrderStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(OrderStatus status) {
+    this.status = status;
+  }
+
+  public String getPidx() {
+    return pidx;
+  }
+
+  public void setPidx(String pidx) {
+    this.pidx = pidx;
   }
 
   public LocalDateTime getCreatedAt() {

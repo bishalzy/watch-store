@@ -12,6 +12,7 @@ import com.watchstore.server.exceptions.ResourceNotFoundException;
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Order;
 import com.watchstore.server.model.OrderItem;
+import com.watchstore.server.model.OrderStatus;
 import com.watchstore.server.model.Product;
 import com.watchstore.server.model.User;
 import com.watchstore.server.repository.InventoryRepository;
@@ -98,5 +99,66 @@ public class OrderService {
       order.addItem(item); // sets bidirectional relationship
     }
     return orderRepository.save(order);
+  }
+
+  @Transactional
+  public Order createPendingOrder(OrderRequestDTO dto) {
+      User user = null;
+      if (dto.getUserId() != null) {
+          user = userRepository.findById(dto.getUserId())
+              .orElseThrow(() -> new BadRequestException("Invalid user ID"));
+      }
+
+      Order order = new Order(user, dto.getDropLocation(), dto.getPhoneNumber());
+      order.setStatus(OrderStatus.PENDING);
+
+      for (OrderItemDTO itemDTO : dto.getItems()) {
+          Product product = productRepository.findById(itemDTO.getProductId())
+              .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + itemDTO.getProductId()));
+
+          Inventory inventory = inventoryRepository.findByProduct(product)
+              .orElseThrow(() -> new ResourceNotFoundException("Inventory not found for " + product.getName()));
+
+          if (inventory.getQuantity() < itemDTO.getQuantity()) {
+              throw new BadRequestException("Insufficient stock for " + product.getName());
+          }
+          // inventory is NOT decremented here — only after payment is confirmed
+
+          OrderItem item = new OrderItem(order, product, itemDTO.getQuantity(), itemDTO.getUnitPrice());
+          order.addItem(item);
+      }
+
+      return orderRepository.save(order);
+  }
+
+  public Order saveOrder(Order order) {
+      return orderRepository.save(order);
+  }
+
+  @Transactional
+  public Order completeOrder(String pidx) {
+    Order order = orderRepository.findByPidx(pidx)
+        .orElseThrow(() -> new ResourceNotFoundException("Order not found for pidx: " + pidx));
+
+    if (order.getStatus() == OrderStatus.COMPLETED) {
+      return order;
+    }
+
+    for (OrderItem item : order.getItems()) {
+      Inventory inventory = inventoryRepository.findByProduct(item.getProduct())
+          .orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
+      inventory.setQuantity(inventory.getQuantity() - item.getQuantity());
+      inventoryRepository.save(inventory);
+    }
+
+    order.setStatus(OrderStatus.COMPLETED);
+    return orderRepository.save(order);
+  }
+
+  public void markOrderFailed(String pidx) {
+      orderRepository.findByPidx(pidx).ifPresent(order -> {
+          order.setStatus(OrderStatus.FAILED);
+          orderRepository.save(order);
+      });
   }
 }

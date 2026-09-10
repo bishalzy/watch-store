@@ -12,6 +12,7 @@ import { useUserStore } from "../../../store/userStore";
 import { Cart } from "../Cart/Cart";
 import { useCartStore } from "../../../store/cartStore";
 import { useNavbarStore } from "../../../store/navbarStore";
+import { ROLES } from "../../../utils/constants";
 
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
@@ -27,6 +28,7 @@ export default function Navbar() {
 
   const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
   const globalUsername = useUserStore((state) => state.globalUsername);
+  const role = useUserStore((state) => state.role);
 
   const showUserMenu = useUIStore((state) => state.showUserMenu);
   const showCart = useUIStore((state) => state.showCart);
@@ -116,23 +118,28 @@ export default function Navbar() {
           <input
             onChange={(e) => setSearchedValue(e.target.value)}
             ref={searchBarRef}
-            className={`${isSearchBarVisible ? "w-[50%] md:w-[65%] xl-[70%]" : "w-0 px-0"
+            className={`${isSearchBarVisible ? "w-[50%] md:w-[65%] xl:w-[50%]" : "w-0 px-0"
               } h-6 text-black px-2 outline-1 transition-all duration-300 absolute right-[160px] md:right-[180px] lg:right-[260px] xl:right-[320px]`}
             placeholder="Search"
           />
         )}
-        <div className="flex items-center w-[200px] justify-end gap-4 lg:justify-between">
+        <div className={`flex items-center justify-end gap-4 lg:justify-between ${
+            role !== ROLES.ADMIN ? "w-[200px]" : "w-[100px]"
+          }`}
+        >
           <button ref={searchIconRef} onClick={handleOpenSearchBar} className="hover:cursor-pointer" aria-label="Search">
             <IoSearchOutline size={25} />
           </button>
-          <button className="flex items-center hover:cursor-pointer" aria-label="Cart" onClick={() => setShowCart(true)}>
-            <LiaShoppingCartSolid size={32} color={cartItems.length > 0 ? "#e65100" : "white"} />
-            {cartItems.length > 0 ?
-              <span className="flex items-center font-bold">
-                <sup className="text-[14px]">{cartItems.length}</sup>
-              </span>
-              : null}
-          </button>
+          {role !== ROLES.ADMIN && (
+            <button className="flex items-center hover:cursor-pointer" aria-label="Cart" onClick={() => setShowCart(true)}>
+              <LiaShoppingCartSolid size={32} color={cartItems.length > 0 ? "#e65100" : "white"} />
+              {cartItems.length > 0 ?
+                <span className="flex items-center font-bold">
+                  <sup className="text-[14px]">{cartItems.length}</sup>
+                </span>
+                : null}
+            </button>
+          )}
           {isUserSignedIn ? (
             <button
               className="bg-white text-black rounded-full w-[30px] h-[30px] text-center font-bold text-[19px] hover:bg-gray-500 hover:text-white duration-150"

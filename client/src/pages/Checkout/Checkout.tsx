@@ -8,21 +8,19 @@ import { validateCheckoutForm } from "../../utils/validateCheckoutForm";
 import { CheckoutFormFields } from "../../types/cartAndCheckoutType";
 import useForm from "../../hooks/useForm";
 import { useCartStore } from "../../store/cartStore";
-import { useNavigate } from "react-router-dom";
-import { useUIStore } from "../../store/uiStore";
-import { placeOrder } from "../../services/api/checkout/checkoutAPI";
+import { initiateCheckout } from "../../services/api/checkout/checkoutAPI";
 import { useUserStore } from "../../store/userStore";
 
 export default function Checkout() {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const {
     checkoutItems,
     dropLocation,
     phoneNumber,
-    cardNumber,
-    cvv,
-    expiry,
+    // cardNumber,
+    // cvv,
+    // expiry,
     checkoutFormErrorFields,
     setCheckoutItems,
     clearCheckoutFormError,
@@ -32,12 +30,9 @@ export default function Checkout() {
     setDropLocation,
     setExpiry,
     setPhoneNumber,
-    clearCheckoutFormValues
   } = useCheckoutStore();
 
-  const { cartItems, clearCart } = useCartStore();
-
-  const { setShowSuccessfulCheckoutPage } = useUIStore();
+  const { cartItems } = useCartStore();
 
   const { userID } = useUserStore();
 
@@ -74,10 +69,10 @@ export default function Checkout() {
 
     const validationError = validateCheckoutForm({
       dropLocation,
-      cardNumber,
       phoneNumber,
-      cvv,
-      expiry
+      // cardNumber,
+      // cvv,
+      // expiry
     })
 
     if (isValidationError(validationError, setCheckoutFormError)) return;
@@ -90,19 +85,16 @@ export default function Checkout() {
       unitPrice: item.price
     }));
 
-    const response = await handleFormSubmit<CheckoutFormFields, string>({
-      apiCall: () => placeOrder({ userId: userID, dropLocation, phoneNumber, items: transformedItems }),
+    const response = await handleFormSubmit<CheckoutFormFields, { paymentUrl: string; pidx: string; orderId: number }>({
+      apiCall: () => initiateCheckout({ userId: userID, dropLocation, phoneNumber, items: transformedItems }),
       setError: setCheckoutAPIError
     })
 
-    console.log(response);
-
     if (response) {
-      setShowSuccessfulCheckoutPage(true);
-      navigate("/checkout-success");
-      clearCart();
-      clearCheckoutFormValues();
+      window.location.href = response.paymentUrl;
     }
+
+    console.log(response);
   }
 
   function handleCheckoutFieldOnChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -117,9 +109,9 @@ export default function Checkout() {
       allFormValues: {
         dropLocation,
         phoneNumber,
-        cardNumber,
-        expiry,
-        cvv
+        // cardNumber,
+        // expiry,
+        // cvv
       },
       formValueSetter,
       validateFunction: validateCheckoutForm,
@@ -172,7 +164,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      <div className="px-0 md:px-4 md:component-x-axis-padding rounded-sm h-[550px] mt-10 md:mt-0" style={{
+      <div className="px-0 md:px-4 md:component-x-axis-padding rounded-sm max-h-[550px] mt-10 md:mt-0 py-2" style={{
         boxShadow: "-3px 0 12px 4px rgb(0, 0, 0, 0.9)",
       }}>
         <h1 className="text-2xl md:text-3xl font-semibold">Shipping Information</h1>
@@ -207,6 +199,7 @@ export default function Checkout() {
                   onChange={handleCheckoutFieldOnChange}
                 />
               </FormFieldWrapper>
+              {/*
               <FormFieldWrapper
                 id="card-number"
                 label="Card Number"
@@ -262,11 +255,16 @@ export default function Checkout() {
                   />
                 </FormFieldWrapper>
               </div>
+                */}
             </div>
 
-            {generalError && <div className="text-red-600 text-center font-semibold">{generalError}</div>}
+            {(generalError || checkoutAPIError) && (
+              <div className="text-red-600 text-center font-semibold">
+                {generalError ?? checkoutAPIError}
+              </div>
+            )}
 
-            <Button textValue={`Pay ${totalAmount.toFixed(2)}`} className="defaultButtonStyle w-full mb-4" />
+            <Button textValue={`Pay with Khalti ${totalAmount.toFixed(2)}`} className="defaultButtonStyle w-full mb-4" />
           </Form>
         </div>
       </div>
