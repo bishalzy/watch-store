@@ -8,6 +8,8 @@ import Button from "../../components/ui/Button/Button";
 import { useCartStore } from "../../store/cartStore";
 import { useAuthStore } from "../../store/authStore";
 import { useUIStore } from "../../store/uiStore";
+import { useUserStore } from "../../store/userStore";
+import { ROLES } from "../../utils/constants";
 
 export default function SingleProductPage() {
   const { id } = useParams();
@@ -19,6 +21,8 @@ export default function SingleProductPage() {
 
   const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
+
+  const role = useUserStore((state) => state.role);
 
   async function fetchProduct() {
     setIsLoading(true);
@@ -71,7 +75,7 @@ export default function SingleProductPage() {
                 ))}
               </p>
             </span>
-            {
+            {role !== ROLES.ADMIN && (
               product.quantity > 0 ?
                 <Button
                   textValue="Add to cart"
@@ -89,7 +93,7 @@ export default function SingleProductPage() {
                     })
                   }}
                 /> : <div className="text-3xl font-semibold text-center">Out of stock</div>
-            }
+            )}
           </div>
         </div>
       }
