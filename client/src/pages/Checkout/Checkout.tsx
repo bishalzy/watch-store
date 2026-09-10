@@ -8,13 +8,11 @@ import { validateCheckoutForm } from "../../utils/validateCheckoutForm";
 import { CheckoutFormFields } from "../../types/cartAndCheckoutType";
 import useForm from "../../hooks/useForm";
 import { useCartStore } from "../../store/cartStore";
-import { useNavigate } from "react-router-dom";
-import { useUIStore } from "../../store/uiStore";
-import { placeOrder } from "../../services/api/checkout/checkoutAPI";
+import { initiateCheckout } from "../../services/api/checkout/checkoutAPI";
 import { useUserStore } from "../../store/userStore";
 
 export default function Checkout() {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const {
     checkoutItems,
@@ -32,12 +30,9 @@ export default function Checkout() {
     setDropLocation,
     setExpiry,
     setPhoneNumber,
-    clearCheckoutFormValues
   } = useCheckoutStore();
 
-  const { cartItems, clearCart } = useCartStore();
-
-  const { setShowSuccessfulCheckoutPage } = useUIStore();
+  const { cartItems } = useCartStore();
 
   const { userID } = useUserStore();
 
@@ -90,19 +85,16 @@ export default function Checkout() {
       unitPrice: item.price
     }));
 
-    const response = await handleFormSubmit<CheckoutFormFields, string>({
-      apiCall: () => placeOrder({ userId: userID, dropLocation, phoneNumber, items: transformedItems }),
+    const response = await handleFormSubmit<CheckoutFormFields, { paymentUrl: string; pidx: string; orderId: number }>({
+      apiCall: () => initiateCheckout({ userId: userID, dropLocation, phoneNumber, items: transformedItems }),
       setError: setCheckoutAPIError
     })
 
-    console.log(response);
-
     if (response) {
-      setShowSuccessfulCheckoutPage(true);
-      navigate("/checkout-success");
-      clearCart();
-      clearCheckoutFormValues();
+      window.location.href = response.paymentUrl;
     }
+
+    console.log(response);
   }
 
   function handleCheckoutFieldOnChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -266,7 +258,7 @@ export default function Checkout() {
                 */}
             </div>
 
-            {generalError || checkoutAPIError && (
+            {(generalError || checkoutAPIError) && (
               <div className="text-red-600 text-center font-semibold">
                 {generalError ?? checkoutAPIError}
               </div>
