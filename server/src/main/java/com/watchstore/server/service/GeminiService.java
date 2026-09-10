@@ -7,6 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +31,8 @@ public class GeminiService {
   @Value("${gemini.api.key}")
   private String apiKey;
 
-  @Value("${gemini.model:gemini-3.6-flash}")
-  private String modelName;
+  @Value("${gemini.models:${gemini.model:gemini-3.6-flash,gemini-3.7-flash,gemini-3.5-flash,gemini-flash-latest}}")
+  private String modelsConfig;
 
   private final ObjectMapper objectMapper;
   private final HttpClient httpClient;
@@ -52,41 +53,65 @@ public class GeminiService {
           Collections.emptyList());
     }
 
+    List<String> models = Arrays.stream(modelsConfig.split(","))
+        .map(String::trim)
+        .filter(m -> !m.isEmpty())
+        .toList();
+
+    if (models.isEmpty()) {
+      models = List.of("gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.5-flash", "gemini-flash-latest");
+    }
+
+    String requestBodyJson;
     try {
-      String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/"
-          + modelName + ":generateContent?key=" + apiKey;
-
       Map<String, Object> requestPayload = buildRequestPayload(catalogJson, userMessage, history);
-      String requestBodyJson = objectMapper.writeValueAsString(requestPayload);
-
-      HttpRequest httpRequest = HttpRequest.newBuilder()
-          .uri(URI.create(endpoint))
-          .header("Content-Type", "application/json")
-          .timeout(Duration.ofSeconds(20))
-          .POST(HttpRequest.BodyPublishers.ofString(requestBodyJson))
-          .build();
-
-      HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-      if (response.statusCode() >= 200 && response.statusCode() < 300) {
-        return parseGeminiResponse(response.body());
-      } else {
-        logger.error("Gemini API error. Status: {}, Body: {}", response.statusCode(), response.body());
-        return new GeminiStructuredResponse(
-            "I'm temporarily having trouble consulting the catalog. Feel free to browse our Products page while I get back up!",
-            Collections.emptyList());
-      }
-
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      logger.error("Gemini API call interrupted", e);
-      return new GeminiStructuredResponse("Request timed out. Please try again.", Collections.emptyList());
+      requestBodyJson = objectMapper.writeValueAsString(requestPayload);
     } catch (Exception e) {
-      logger.error("Error communicating with Gemini API", e);
+      logger.error("Error building Gemini request payload", e);
       return new GeminiStructuredResponse(
           "I encountered an unexpected issue. Please ask again or explore our Products collection.",
           Collections.emptyList());
     }
+
+    for (int i = 0; i < models.size(); i++) {
+      String currentModel = models.get(i);
+      try {
+        String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/"
+            + currentModel + ":generateContent?key=" + apiKey;
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+            .uri(URI.create(endpoint))
+            .header("Content-Type", "application/json")
+            .timeout(Duration.ofSeconds(20))
+            .POST(HttpRequest.BodyPublishers.ofString(requestBodyJson))
+            .build();
+
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+          logger.info("Successfully received recommendation using model '{}'", currentModel);
+          return parseGeminiResponse(response.body());
+        } else {
+          logger.warn("Gemini API error with model '{}'. Status: {}, Body: {}",
+              currentModel, response.statusCode(), response.body());
+        }
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        logger.error("Gemini API call interrupted while using model '{}'", currentModel, e);
+        return new GeminiStructuredResponse("Request timed out. Please try again.", Collections.emptyList());
+      } catch (Exception e) {
+        logger.warn("Exception while communicating with Gemini API using model '{}': {}", currentModel, e.getMessage());
+      }
+
+      if (i < models.size() - 1) {
+        logger.info("Attempting fallback to next model '{}'...", models.get(i + 1));
+      }
+    }
+
+    logger.error("All configured Gemini models ({}) failed to respond successfully.", models);
+    return new GeminiStructuredResponse(
+        "I'm temporarily having trouble consulting the catalog. Feel free to browse our Products page while I get back up!",
+        Collections.emptyList());
   }
 
   private Map<String, Object> buildRequestPayload(String catalogJson, String userMessage,
