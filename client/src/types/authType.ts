@@ -24,3 +24,6 @@ export interface UserDTOResponse {
   username: string;
   role: string;
 }
+
+export type LoginAndRegisterResponse = UserDTOResponse;
+

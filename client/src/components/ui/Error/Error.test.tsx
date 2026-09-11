@@ -9,7 +9,7 @@ describe("ErrorMessage Component", () => {
 
   it("renders the error message with dash prefix if isInputFieldError is true", () => {
     render(<ErrorMessage message="Invalid input" isInputFieldError />);
-    expect(screen.getByText("- Invalid input")).toBeInTheDocument();
+    expect(screen.getByTestId("error")).toHaveTextContent("- Invalid input");
   });
 
   it("applies custom className", () => {

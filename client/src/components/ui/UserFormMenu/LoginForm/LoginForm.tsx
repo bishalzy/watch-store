@@ -14,11 +14,11 @@ import { useUIStore } from "../../../../store/uiStore";
 import FormFieldWrapper from "../../FormFieldWrapper/FormFieldWrapper";
 
 interface LoginFormProps {
-  hasForgotPassword: boolean;
-  setHasForgotPassword: (hasForgotPassword: boolean) => void;
+  hasForgotPassword?: boolean;
+  setHasForgotPassword?: (hasForgotPassword: boolean) => void;
 }
 
-export default function LoginForm({ hasForgotPassword, setHasForgotPassword }: LoginFormProps) {
+export default function LoginForm({ hasForgotPassword = false, setHasForgotPassword = () => {} }: LoginFormProps) {
   const loginEmail = useAuthStore((state) => state.loginEmail);
   const loginPassword = useAuthStore((state) => state.loginPassword);
   const securityCode = useAuthStore((state) => state.securityCode);

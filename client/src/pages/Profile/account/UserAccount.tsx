@@ -64,8 +64,8 @@ export default function UserAccount() {
       if (editedUsernameValue) {
         const response = await updateUsername({ updatedUsername: editedUsernameValue, userEmail: globalEmail });
         console.log(response);
-        if (response.token) {
-          setGlobalUsername("");
+        if (response) {
+          setGlobalUsername(response.username);
           handleSuccessfulResponse(response);
           setEditedUsernameValue(null);
         }

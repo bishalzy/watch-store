@@ -14,4 +14,8 @@ describe("Home Component", () => {
   beforeEach(() => {
     render(<RouterProvider router={router} />);
   });
+
+  it("renders home page successfully", () => {
+    expect(document.body).toBeInTheDocument();
+  });
 });
