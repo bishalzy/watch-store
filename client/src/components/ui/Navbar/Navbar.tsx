@@ -115,13 +115,23 @@ export default function Navbar() {
           <span className="text-[11px] text-[#F2EDE4]/45 hidden xl:block md:w-[80%] xl:w-full">Free shipping and returns within 3 days</span>
         </div>
         {openSearchBar && (
-          <input
-            onChange={(e) => setSearchedValue(e.target.value)}
-            ref={searchBarRef}
-            className={`${isSearchBarVisible ? "w-[50%] md:w-[65%] xl:w-[50%]" : "w-0 px-0"
-              } h-6 bg-[#F2EDE4] text-[#0A0A0B] px-2 outline-none focus:ring-1 focus:ring-[#1BDDF3] transition-all duration-300 absolute right-[160px] md:right-[180px] lg:right-[260px] xl:right-[320px]`}
-            placeholder="Search"
-          />
+          <div
+            className={`absolute right-[160px] md:right-[180px] lg:right-[260px] xl:right-[320px] transition-all duration-300 ease-out origin-right
+              ${isSearchBarVisible ? "opacity-100 scale-x-100 w-[50%] md:w-[65%] xl:w-[50%]" : "opacity-0 scale-x-95 w-[50%] md:w-[65%] xl:w-[50%]"}`}
+          >
+            <div className="relative flex items-center">
+              <IoSearchOutline
+                size={14}
+                className="absolute left-2.5 text-[#0A0A0B]/40 pointer-events-none"
+              />
+              <input
+                onChange={(e) => setSearchedValue(e.target.value)}
+                ref={searchBarRef}
+                className="w-full h-7 bg-[#F2EDE4] text-[#0A0A0B] pl-8 pr-2 text-sm outline-none focus:ring-1 focus:ring-[#1BDDF3] rounded-sm"
+                placeholder="Search"
+              />
+            </div>
+          </div>
         )}
         <div className={`flex items-center justify-end gap-4 lg:justify-between ${
             role !== ROLES.ADMIN ? "w-[200px]" : "w-[100px]"
