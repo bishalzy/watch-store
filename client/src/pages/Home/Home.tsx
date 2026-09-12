@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <>
       <div
-        className="bg-[#0A0A0B] text-[#F2EDE4]"
+        className="bg-[#0A0A0B] text-[#F2EDE4] py-20"
         style={{ minHeight: `calc(85dvh - ${navbarHeight}px)` }}
       >
         <div className="flex flex-col-reverse xl:flex-row xl:items-center h-full max-w-[1200px] mx-auto px-4 md:component-x-axis-padding gap-10 xl:gap-4 pt-8 pb-14 xl:py-0">

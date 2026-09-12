@@ -40,7 +40,6 @@ export default function Products() {
 
   const role = useUserStore((state) => state.role);
 
-
   const searchedValue = useNavbarStore((state) => state.searchedValue);
 
   const showUpdateProductForm = useUIStore((state) => state.showUpdateProductForm);
@@ -149,35 +148,36 @@ export default function Products() {
   }, [showUpdateProductForm]);
 
   if (products.length === 0 && !isLoading || sortedProducts.length === 0 && !isLoading) return (
-    <div className="w-full text-center mt-20">
-      <h1 className="text-white text-4xl font-semibold">No products found</h1>
+    <div className="w-full text-center mt-20 bg-[#0A0A0B] py-20">
+      <h1 className="text-[#F2EDE4] font-serif text-3xl md:text-4xl">No products found</h1>
     </div>
   )
 
   return (
     <FetchStatusDisplay isLoading={isLoading} error={error} isEmpty={!products && !isLoading} emptyMessage="No products available">
-      <div className="text-white px-4 md:component-x-axis-padding">
-        <h1 className="text-center text-3xl font-bold mb-6">Products</h1>
+      <div className="text-[#F2EDE4] bg-[#0A0A0B] px-4 md:component-x-axis-padding py-8">
+        <h1 className="text-center text-3xl md:text-4xl mb-8">Products</h1>
 
-        <div className="flex items-center justify-center md:justify-end gap-2 pb-8">
-          <label htmlFor="sort" className="text-white font-semibold md:text-2xl">
-            Sort:
+        <div className="flex items-center justify-center md:justify-end gap-3 pb-8">
+          <label htmlFor="sort" className="text-[#F2EDE4]/60 text-sm md:text-base">
+            Sort
           </label>
           <select
             id="sort"
-            className="bg-white text-black rounded-md px-1 md:px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent text-[#F2EDE4] border border-[#F2EDE4]/20 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-[#1BDDF3] [&>option]:bg-[#0A0A0B] [&>option]:text-[#F2EDE4]"
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
           >
             <option value="az">A-Z</option>
             <option value="za">Z-A</option>
-            <option value="priceLowHigh">Price: Low-High</option>
-            <option value="priceHighLow">Price: High-Low</option>
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
+            <option value="priceLowHigh">Price, low to high</option>
+            <option value="priceHighLow">Price, high to low</option>
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
           </select>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
           {
             sortedProducts.map((product) => (
               <div
@@ -185,18 +185,18 @@ export default function Products() {
                 key={product.id}
               >
                 {role === ROLES.ADMIN &&
-                  <div className="flex gap-5 justify-end">
-                    <div className="after:block after:bg-white after:w-[1px] after:h-2 after:items-center after:mx-auto hover:after:w-[3px]">
+                  <div className="flex gap-5 justify-end pb-2">
+                    <div className="after:block after:bg-[#F2EDE4]/40 after:w-[1px] after:h-2 after:items-center after:mx-auto hover:after:w-[3px] hover:after:bg-[#1BDDF3]">
                       <Button textValue="Edit"
-                        className="defaultButtonStyle h-[35px] w-[60px] items-center"
+                        className="h-[32px] w-[56px] items-center text-xs text-[#F2EDE4]/70 border border-[#F2EDE4]/25 rounded-sm hover:border-[#1BDDF3] hover:text-[#1BDDF3] transition-colors duration-150"
                         onClick={() => {
                           setShowUpdateProductForm(true);
                           setSelectedProduct(product);
                         }} />
                     </div>
-                    <div className="after:flex after:bg-white after:w-[1px] after:h-2 after:justify-center after:items-center after:mx-auto hover:after:w-[3px]">
+                    <div className="after:flex after:bg-[#F2EDE4]/40 after:w-[1px] after:h-2 after:justify-center after:items-center after:mx-auto hover:after:w-[3px] hover:after:bg-red-500">
                       <Button textValue="Delete"
-                        className="defaultButtonStyle h-[35px] w-[70px] items-center bg-red-600 hover:bg-red-800 hover:text-white"
+                        className="h-[32px] w-[64px] items-center text-xs text-[#F2EDE4]/70 border border-[#F2EDE4]/25 rounded-sm hover:border-red-500 hover:text-red-500 transition-colors duration-150"
                         onClick={() => {
                           setShowConfirmModal(true);
                           setProductToDelete({ id: product.id, name: product.name });
@@ -207,25 +207,30 @@ export default function Products() {
                 }
                 <Link to={`/product/${product.id}`}>
                   <div
-                    className={`h-[400px] md:h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
-                    <div className="flex justify-between pt-4 px-4 items-center">
-                      <div className="flex flex-col gap-1">
-                        <h1 className="font-black text-2xl md:text-3xl whitespace-nowrap overflow-x-auto max-w-[200px]">{product.name}</h1>
-                        <h1 className="font-semibold text-sm tracking-wide text-[#c7c7c7]">{product.category}</h1>
+                    className="h-[380px] md:h-[460px] flex flex-col bg-[#111113] group border border-[#F2EDE4]/10 rounded-sm hover:border-[#F2EDE4]/30 transition-colors duration-200">
+                    <div className="flex justify-between pt-4 px-4 items-start gap-2">
+                      <div className="flex flex-col gap-1 min-w-0">
+                        <h1
+                          className="text-xl md:text-2xl truncate"
+                          title={product.name}
+                        >
+                          {product.name}
+                        </h1>
+                        <h1 className="text-xs tracking-wide text-[#F2EDE4]/45 uppercase">{product.category}</h1>
                       </div>
                     </div>
                     <img
-                      className="h-[280px] md:h-[370px] object-contain w-full py-2 scale-90 group-hover:scale-105 transition-transform duration-200"
+                      className="h-[250px] md:h-[330px] object-contain w-full py-2 scale-90 group-hover:scale-[0.95] transition-transform duration-300 ease-out"
                       src={`http://localhost:5000/images/${product.imagePath}`}
                       alt={product.name}
                     />
 
-                    <div className="flex justify-between align-middle items-center px-4">
-                      <span className="flex gap-2 items-center">
-                        <h3 className="text-[#c7c7c7] text-sm">Quantity</h3>
-                        <h1 className="font-semibold text-lg max-w-[50px] overflow-x-auto">{product.quantity}</h1>
+                    <div className="flex justify-between items-center px-4 pb-4 border-t border-[#F2EDE4]/10 pt-3">
+                      <span className="flex gap-2 items-baseline">
+                        <h3 className="text-[#F2EDE4]/45 text-xs">Qty</h3>
+                        <h1 className="font-medium text-sm">{product.quantity}</h1>
                       </span>
-                      <h1 className="font-bold text-2xl md:text-3xl max-w-[140px] overflow-x-auto whitespace-nowrap">Rs. {product.price}</h1>
+                      <h1 className="font-serif text-xl md:text-2xl text-[#1BDDF3]">Rs. {product.price}</h1>
                     </div>
                   </div>
                 </Link>
