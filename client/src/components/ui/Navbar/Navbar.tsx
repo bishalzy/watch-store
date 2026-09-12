@@ -110,16 +110,16 @@ export default function Navbar() {
     <div ref={navbarRef} className="fixed top-0 flex flex-col justify-between items-center z-20 w-dvw overflow-hidden" data-testid="navbar">
       {showUserMenu && <UserMenu />}
       {showCart && <Cart />}
-      <div className="flex w-full py-2 outerDivBackgroundColour text-white items-center px-4 justify-end md:px-[50px] md:justify-between">
+      <div className="flex w-full py-2 outerDivBackgroundColour text-[#F2EDE4] items-center px-4 justify-end md:px-[50px] md:justify-between">
         <div>
-          <span className="text-[10px] italic capitalize text-[#898989] hidden xl:block md:w-[80%] xl:w-full">Buy best watches with free shipping & returns</span>
+          <span className="text-[11px] text-[#F2EDE4]/45 hidden xl:block md:w-[80%] xl:w-full">Free shipping and returns within 3 days</span>
         </div>
         {openSearchBar && (
           <input
             onChange={(e) => setSearchedValue(e.target.value)}
             ref={searchBarRef}
             className={`${isSearchBarVisible ? "w-[50%] md:w-[65%] xl:w-[50%]" : "w-0 px-0"
-              } h-6 text-black px-2 outline-1 transition-all duration-300 absolute right-[160px] md:right-[180px] lg:right-[260px] xl:right-[320px]`}
+              } h-6 bg-[#F2EDE4] text-[#0A0A0B] px-2 outline-none focus:ring-1 focus:ring-[#1BDDF3] transition-all duration-300 absolute right-[160px] md:right-[180px] lg:right-[260px] xl:right-[320px]`}
             placeholder="Search"
           />
         )}
@@ -127,14 +127,14 @@ export default function Navbar() {
             role !== ROLES.ADMIN ? "w-[200px]" : "w-[100px]"
           }`}
         >
-          <button ref={searchIconRef} onClick={handleOpenSearchBar} className="hover:cursor-pointer" aria-label="Search">
+          <button ref={searchIconRef} onClick={handleOpenSearchBar} className="hover:text-[#1BDDF3] transition-colors duration-150" aria-label="Search">
             <IoSearchOutline size={25} />
           </button>
           {role !== ROLES.ADMIN && (
-            <button className="flex items-center hover:cursor-pointer" aria-label="Cart" onClick={() => setShowCart(true)}>
-              <LiaShoppingCartSolid size={32} color={cartItems.length > 0 ? "#e65100" : "white"} />
+            <button className="flex items-center hover:text-[#1BDDF3] transition-colors duration-150" aria-label="Cart" onClick={() => setShowCart(true)}>
+              <LiaShoppingCartSolid size={32} color={cartItems.length > 0 ? "#1BDDF3" : "currentColor"} />
               {cartItems.length > 0 ?
-                <span className="flex items-center font-bold">
+                <span className="flex items-center font-medium text-[#1BDDF3]">
                   <sup className="text-[14px]">{cartItems.length}</sup>
                 </span>
                 : null}
@@ -142,45 +142,47 @@ export default function Navbar() {
           )}
           {isUserSignedIn ? (
             <button
-              className="bg-white text-black rounded-full w-[30px] h-[30px] text-center font-bold text-[19px] hover:bg-gray-500 hover:text-white duration-150"
+              className="bg-[#F2EDE4] text-[#0A0A0B] rounded-full w-[30px] h-[30px] text-center font-semibold text-[16px] hover:bg-[#1BDDF3] duration-150"
               onClick={() => navigate("/profile")}>
               {getFirstAlphabetLetter(globalUsername)}
             </button>
           ) : (
-            <button className="hover:cursor-pointer" aria-label="User" onClick={() => setShowUserMenu(true)}>
+            <button className="hover:text-[#1BDDF3] transition-colors duration-150" aria-label="User" onClick={() => setShowUserMenu(true)}>
               <FaRegUser size={22} />
             </button>
           )}
         </div>
       </div>
       <div
-        className={`px-4 md:component-x-axis-padding flex w-full py-5 items-center text-white duration-300 border-b-[1px] border-b-white/[.5] border-t-transparent ${isNavbarBackgroundVisible
-          ? "bg-black/[.5] backdrop-blur-md border-t-[1px] border-t-white/[.5]"
+        className={`px-4 md:component-x-axis-padding flex w-full py-5 items-center text-[#F2EDE4] duration-300 border-b-[1px] border-b-[#F2EDE4]/10 border-t-transparent ${isNavbarBackgroundVisible
+          ? "bg-[#0A0A0B]/70 backdrop-blur-md border-t-[1px] border-t-[#F2EDE4]/10"
           : "bg-transparent backdrop-blur-md"
           }`}
         data-testid="bottom-navbar"
         ref={bottomNavbarRef}>
-        <button onClick={scrollToTop} className="flex items-center gap-2 hover:scale-110 duration-300">
-          <span className="bg-[#1bddf3] w-4 h-4 lg:w-5 lg:h-5 block"></span>
-          <span className="font-bold tracking-wider text-white md:text-2xl">WS</span>
+        <button onClick={scrollToTop} className="flex items-center gap-2">
+          <span className="bg-[#1BDDF3] w-4 h-4 lg:w-5 lg:h-5 block"></span>
+          <span className="font-serif tracking-wide text-[#F2EDE4] md:text-2xl">WS</span>
         </button>
         <div className="flex w-full px-4 justify-end md:justify-center md:px-0">
           <div className="flex gap-2 md:gap-[8rem]">
             <NavLink
+              viewTransition
               to={"/"}
               className={({ isActive }) => {
-                return isActive ? "navbar-link-style border-b-2 border-white" : "navbar-link-style";
+                return isActive ? "navbar-link-style border-b border-[#1BDDF3] text-[#F2EDE4]" : "navbar-link-style text-[#F2EDE4]/60 hover:text-[#F2EDE4]";
               }}>
               Home
             </NavLink>
             <NavLink
+              viewTransition
               to={"/products"}
               className={({ isActive }) => {
-                return isActive ? "navbar-link-style border-b-2 border-white" : "navbar-link-style";
+                return isActive ? "navbar-link-style border-b border-[#1BDDF3] text-[#F2EDE4]" : "navbar-link-style text-[#F2EDE4]/60 hover:text-[#F2EDE4]";
               }}>
               Products
             </NavLink>
-            <button className="navbar-link-style" onClick={handleGoToAboutUs}>
+            <button className="navbar-link-style text-[#F2EDE4]/60 hover:text-[#F2EDE4]" onClick={handleGoToAboutUs}>
               About Us
             </button>
           </div>

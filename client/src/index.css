@@ -22,7 +22,8 @@ body {
   0% {
     background-position: 100% 0;
   }
-  40%, 60% {
+  40%,
+  60% {
     opacity: 1;
   }
   100% {
@@ -39,7 +40,8 @@ body {
   0% {
     background-position: -100% 0;
   }
-  40%, 60% {
+  40%,
+  60% {
     opacity: 1;
   }
   100% {
@@ -82,4 +84,9 @@ input[type="number"] {
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255) transparent;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
 }
