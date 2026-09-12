@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.watchstore.server.config.StorageProperties;
 import com.watchstore.server.dto.product.ProductDTO;
 import com.watchstore.server.dto.product.ProductRequest;
 import com.watchstore.server.exceptions.BadRequestException;
@@ -20,7 +19,6 @@ import com.watchstore.server.repository.InventoryRepository;
 import com.watchstore.server.repository.OrderItemRepository;
 import com.watchstore.server.repository.CategoryRepository;
 import com.watchstore.server.repository.ProductRepository;
-import com.watchstore.server.util.FileStorageUtil;
 
 @Service
 public class ProductService {
@@ -28,26 +26,26 @@ public class ProductService {
   private final InventoryRepository inventoryRepository;
   private final CategoryRepository categoryRepository;
   private final OrderItemRepository orderItemRepository;
-  private final StorageProperties storageProperties;
+  private final CloudinaryService cloudinaryService;
 
   public ProductService(ProductRepository productRepository, InventoryRepository inventoryRepository,
       CategoryRepository categoryRepository, OrderItemRepository orderItemRepository,
-      StorageProperties storageProperties) {
+      CloudinaryService cloudinaryService) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.inventoryRepository = inventoryRepository;
     this.orderItemRepository = orderItemRepository;
-    this.storageProperties = storageProperties;
+    this.cloudinaryService = cloudinaryService;
   }
 
   public void createProductWithInventory(ProductRequest productRequest) {
     MultipartFile file = productRequest.getProductImage();
-    String randomFileName;
+    String imageUrl;
 
     try {
-      randomFileName = FileStorageUtil.saveFile(file, storageProperties.getDir());
-    } catch (IllegalStateException | IOException e) {
-      throw new RuntimeException(e.getMessage());
+      imageUrl = cloudinaryService.uploadImage(file, "watchstore/products");
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to upload image to Cloudinary: " + e.getMessage(), e);
     }
 
     Category category = categoryRepository
@@ -63,7 +61,7 @@ public class ProductService {
         productRequest.getProductPrice(),
         category,
         productRequest.getProductDescription(),
-        randomFileName);
+        imageUrl);
 
     Inventory inventory = new Inventory();
     inventory.setQuantity(productRequest.getProductQuantity());
@@ -78,17 +76,16 @@ public class ProductService {
         .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
 
     MultipartFile file = productRequest.getProductImage();
-    String randomFileName;
 
     try {
       if (file != null && !file.isEmpty()) {
-        FileStorageUtil.deleteFile(existingProduct.getImage(), storageProperties.getDir());
-        randomFileName = FileStorageUtil.saveFile(file, storageProperties.getDir());
-        existingProduct.setImage(randomFileName);
+        cloudinaryService.deleteImage(existingProduct.getImage());
+        String newImageUrl = cloudinaryService.uploadImage(file, "watchstore/products");
+        existingProduct.setImage(newImageUrl);
       }
-    } catch (IllegalStateException | IOException e) {
+    } catch (Exception e) {
       e.printStackTrace();
-      throw new RuntimeException(e.getMessage());
+      throw new RuntimeException("Failed to update product image: " + e.getMessage(), e);
     }
 
     Category category = categoryRepository.findByCategoryName(productRequest.getProductCategory().toLowerCase())
@@ -122,9 +119,9 @@ public class ProductService {
       String imagePath = product.getImage();
 
       try {
-        FileStorageUtil.deleteFile(imagePath, storageProperties.getDir());
+        cloudinaryService.deleteImage(imagePath);
       } catch (Exception e) {
-        System.err.println("Failed to delete image file: " + imagePath);
+        System.err.println("Failed to delete image from Cloudinary: " + imagePath);
       }
 
       productRepository.deleteById(id);

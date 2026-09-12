@@ -30,8 +30,17 @@ public class EnvConfig {
     if (dotenv.get("GEMINI_MODEL") != null) {
       System.setProperty("GEMINI_MODEL", dotenv.get("GEMINI_MODEL"));
     }
-    if (dotenv.get("UPLOAD_DIR") != null) {
-      System.setProperty("app.upload.dir", dotenv.get("UPLOAD_DIR"));
+    String cloudName = dotenv.get("CLOUDINARY_CLOUD_NAME") != null ? dotenv.get("CLOUDINARY_CLOUD_NAME") : dotenv.get("CLOUDNARY_CLOUD_NAME");
+    if (cloudName != null) {
+      System.setProperty("cloudinary.cloud-name", cloudName);
+    }
+    String apiKey = dotenv.get("CLOUDINARY_API_KEY") != null ? dotenv.get("CLOUDINARY_API_KEY") : dotenv.get("CLOUDNARY_API_KEY");
+    if (apiKey != null) {
+      System.setProperty("cloudinary.api-key", apiKey);
+    }
+    String apiSecret = dotenv.get("CLOUDINARY_API_SECRET") != null ? dotenv.get("CLOUDINARY_API_SECRET") : dotenv.get("CLOUDNARY_API_SECRET");
+    if (apiSecret != null) {
+      System.setProperty("cloudinary.api-secret", apiSecret);
     }
   }
 }

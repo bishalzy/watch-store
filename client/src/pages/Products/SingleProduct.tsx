@@ -10,6 +10,7 @@ import { useAuthStore } from "../../store/authStore";
 import { useUIStore } from "../../store/uiStore";
 import { useUserStore } from "../../store/userStore";
 import { ROLES } from "../../utils/constants";
+import { getProductImageUrl } from "../../utils/imageUtil";
 
 export default function SingleProductPage() {
   const { id } = useParams();
@@ -45,7 +46,7 @@ export default function SingleProductPage() {
       {product &&
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-white">
           <img
-            src={`http://localhost:5000/images/${product.imagePath}`}
+            src={getProductImageUrl(product.imagePath)}
             alt={product.name}
             className="w-[600px] rounded-lg shadow-lg"
           />

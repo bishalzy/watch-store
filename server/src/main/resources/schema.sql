@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS products (
     category_id BIGINT NOT NULL,
     description TEXT NOT NULL,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
-    image VARCHAR(255) NOT NULL,
+    image VARCHAR(500) NOT NULL,
     CONSTRAINT fk_products_category 
       FOREIGN KEY (category_id) 
       REFERENCES product_category(id) 

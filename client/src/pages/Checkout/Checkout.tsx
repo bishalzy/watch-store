@@ -10,6 +10,7 @@ import useForm from "../../hooks/useForm";
 import { useCartStore } from "../../store/cartStore";
 import { initiateCheckout } from "../../services/api/checkout/checkoutAPI";
 import { useUserStore } from "../../store/userStore";
+import { getProductImageUrl } from "../../utils/imageUtil";
 
 export default function Checkout() {
   // const navigate = useNavigate()
@@ -140,7 +141,8 @@ export default function Checkout() {
                 <div className="pt-2" key={item.id}>
                   <div className="flex">
                     <img
-                      src={`http://localhost:5000/images/${item.imagePath}`}
+                      src={getProductImageUrl(item.imagePath)}
+                      alt={item.name}
                       className="w-40 h-[120px] object-contain"
                     />
                     <div className="flex justify-between w-full">

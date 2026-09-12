@@ -29,7 +29,7 @@ public class Product {
   @Column(nullable = false)
   private String description;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 500)
   private String image;
 
   @Column(name = "is_active", nullable = false)

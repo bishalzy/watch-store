@@ -4,6 +4,7 @@ import Button from "../Button/Button";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
 import { MdDeleteOutline } from "react-icons/md";
 import * as React from "react";
+import { getProductImageUrl } from "../../../utils/imageUtil";
 
 export function Cart() {
   const [closeSidePanel, setCloseSidePanel] = React.useState<boolean>(false);
@@ -35,7 +36,7 @@ export function Cart() {
                   return (
                     <div className="flex md:px-4 py-2 border-b border-white/[.5]" key={item.id}>
                       <img
-                        src={`http://localhost:5000/images/${item.imagePath}`}
+                        src={getProductImageUrl(item.imagePath)}
                         className="w-40 h-[80px] md:w-40 md:h-[120px] object-contain"
                       />
                       <div className="grid grid-cols-2 md:grid-cols-[2fr_1fr] w-full gap-2">

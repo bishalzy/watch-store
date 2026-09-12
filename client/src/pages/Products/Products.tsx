@@ -14,6 +14,7 @@ import getLevenshteinDistance from "../../utils/algorithm";
 import { useUIStore } from "../../store/uiStore";
 import { useSortedList } from "../../hooks/useSortedList";
 import { deleteProduct } from "../../services/api/admin/adminProductAPI";
+import { getProductImageUrl } from "../../utils/imageUtil";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
@@ -216,7 +217,7 @@ export default function Products() {
                     </div>
                     <img
                       className="h-[280px] md:h-[370px] object-contain w-full py-2 scale-90 group-hover:scale-105 transition-transform duration-200"
-                      src={`http://localhost:5000/images/${product.imagePath}`}
+                      src={getProductImageUrl(product.imagePath)}
                       alt={product.name}
                     />
 
