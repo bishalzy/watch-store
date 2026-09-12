@@ -27,7 +27,8 @@ public class CorsConfig {
             "http://127.0.0.1:*",
             "https://*.railway.app",
             "https://*.vercel.app",
-            "https://*.netlify.app"
+            "https://*.netlify.app",
+            "https://commerce.bishaladhikari0.com.np"
         ));
 
         if (clientUrl != null && !clientUrl.isBlank()) {

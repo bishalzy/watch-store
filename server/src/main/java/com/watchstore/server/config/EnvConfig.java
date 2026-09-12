@@ -34,7 +34,13 @@ public class EnvConfig {
     } catch (Exception ignored) {
     }
 
-    setPropertyIfPresent("spring.datasource.url", getEnv(dotenv, "DB_URL"));
+    String dbUrl = getEnv(dotenv, "DB_URL");
+    if (dbUrl != null) {
+      if (dbUrl.startsWith("mysql://") || dbUrl.startsWith("mariadb://")) {
+        dbUrl = "jdbc:" + dbUrl;
+      }
+      setPropertyIfPresent("spring.datasource.url", dbUrl);
+    }
     setPropertyIfPresent("spring.datasource.username", getEnv(dotenv, "DB_USERNAME"));
     setPropertyIfPresent("spring.datasource.password", getEnv(dotenv, "DB_PASSWORD"));
     setPropertyIfPresent("app.admin.email", getEnv(dotenv, "ADMIN_EMAIL"));
