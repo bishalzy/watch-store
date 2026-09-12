@@ -1,20 +1,36 @@
 export default function AboutUs() {
+  const reasons = [
+    { title: "Built to last", body: "Cases and movements chosen for durability, not just looks." },
+    { title: "A range for every budget", body: "From everyday pieces to the ones you save up for." },
+    { title: "Delivered to your door", body: "Anytime, day or night, we don't keep office hours." },
+    { title: "Simple returns", body: "3 days from delivery, no questions asked." },
+    { title: "Your data stays yours", body: "We only ever ask for what's needed to get your order to you." },
+  ];
+
   return (
-    <div id="about-us" className="px-4 lg:component-x-axis-padding bg-black text-white border-t-2 border-white/[.5] py-10">
-      <div className="md:py-6">
-        <h1 className="text-2xl pb-6 md:text-3xl">About us</h1>
-        <p className="text-[16px] text-justify md:text-[22px] md:text-left">The Watch Store was founded to sell durable and stylish watches. Although sometimes expensive, they are very durable and of high quality. Alright, enough with this bullshit. This website does not sell watches. I do not know what else to put in the About us section, so I am just typing this so that it looks somewhat long.</p>
-      </div>
-      <div className="py-10">
-        <h1 className="text-2xl md:text-3xl pb-6">Why choose us?</h1>
-        <ul className="px-4 text-[16px] md:px-6 md:text-[22px] list-none list-dash">
-          <li className="pl-6 -indent-4 before:mr-2"> Durable and stylish watches.</li>
-          <li className="pl-6 -indent-4 before:mr-2"> All kind of watches are available from cheap to expensive, low quality to high quality.</li>
-          <li className="pl-6 -indent-4 before:mr-2"> Home delivery, right outside your door anytime of the day (or night).</li>
-          <li className="pl-6 -indent-4 before:mr-2"> Absolute return policy within 3 days of buying. Although sometimes it might take more than 3 days to deliver, in which case the return policy expires before it was even delivered.</li>
-          <li className="pl-6 -indent-4 before:mr-2"> We do not sell your data and do not request for any other additional data than what is absolutely required for the secure delivery of your product.</li>
-        </ul>
+    <div id="about-us" className="bg-[#0A0A0B] text-[#F2EDE4] border-t border-[#F2EDE4]/10">
+      <div className="max-w-[1200px] mx-auto px-4 md:component-x-axis-padding py-16 md:py-24 grid md:grid-cols-[1fr_1.2fr] gap-12 md:gap-20">
+        <div className="flex flex-col gap-5">
+          <h2 className="text-3xl md:text-4xl">About us</h2>
+          <p className="text-[#F2EDE4]/70 text-base md:text-lg leading-relaxed">
+            The Watch Store started with a simple idea: good watches shouldn't require a lecture
+            on movements and lug widths to enjoy. We pick pieces that are durable, honestly priced,
+            and worth wearing every day then get them to you - without the fuss.
+          </p>
+        </div>
+
+        <div className="flex flex-col">
+          <h3 className="text-xl md:text-2xl pb-4">Why choose us</h3>
+          <ul className="flex flex-col">
+            {reasons.map((r) => (
+              <li key={r.title} className="py-5 border-t border-[#F2EDE4]/10 last:border-b">
+                <p className="text-base md:text-lg">{r.title}</p>
+                <p className="text-sm md:text-base text-[#F2EDE4]/55 mt-1">{r.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
-  )
+  );
 }
