@@ -57,7 +57,11 @@ function customClassName({ addComponents }) {
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        serif: ["Libre Caslon Text", "Georgia", "serif"],
+      },
+    },
   },
   plugins: [plugin(customClassName)],
 };
