@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import UserProfileMenu from "./menu/UserProfileMenu";
@@ -16,8 +15,8 @@ export default function UserProfile() {
   }, [isUserSignedIn]);
 
   return (
-    <div className="relative outerDivBackgroundColour min-h-dvh">
-      <div className={`flex flex-col md:flex-row`}>
+    <div className="relative bg-[#0A0A0B] min-h-dvh">
+      <div className="flex flex-col md:flex-row">
         <UserProfileMenu />
         <Outlet />
       </div>
