@@ -43,30 +43,35 @@ export default function SingleProductPage() {
   return (
     <FetchStatusDisplay isLoading={isLoading} isEmpty={!product && !isLoading} error={error} emptyMessage="Could not fetch product.">
       {product &&
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-white">
-          <img
-            src={`http://localhost:5000/images/${product.imagePath}`}
-            alt={product.name}
-            className="w-[600px] rounded-lg shadow-lg"
-          />
-          <div className="flex flex-col px-4 py-4 gap-4 md:pl-8 max-w-full md:max-w-[500px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start text-[#F2EDE4] bg-[#0A0A0B] px-4 md:component-x-axis-padding py-8 md:py-14">
+          <div className="w-[480px] aspect-square md:aspect-[4/5] rounded-sm flex items-center justify-center overflow-hidden">
+            <img
+              src={`http://localhost:5000/images/${product.imagePath}`}
+              alt={product.name}
+              className="w-full h-full object-contain p-6 md:p-10"
+            />
+          </div>
+
+          <div className="flex flex-col gap-6 md:gap-8 max-w-full md:max-w-[500px] bg-[#111113] px-6 py-6 md:px-8 md:py-8 rounded-sm">
             <div>
-              <h1 className="text-3xl md:text-5xl font-semibold md:mb-4 md:w-full overflow-style">{product.name}</h1>
-              <p className="text-[14px] md:text-2xl text-gray-300 mb-2 max-w-full overflow-style">{product.category}</p>
+              <h1 className="text-3xl md:text-5xl leading-tight truncate" title={product.name}>{product.name}</h1>
+              <p className="text-sm md:text-base text-[#F2EDE4]/45 uppercase tracking-wide mt-2">{product.category}</p>
             </div>
-            <div className="flex flex-col md:gap-2">
-              <span className="flex justify-between text-gray-300 items-center uppercase">
-                <h4 className="text-[14px] md:text-[16px]">Price</h4>
-                <h4 className="text-[14px] md:text-[16px]">Quantity</h4>
+
+            <div className="flex flex-col gap-2 border-t border-b border-[#F2EDE4]/10 py-4">
+              <span className="flex justify-between text-[#F2EDE4]/45 items-center text-xs uppercase tracking-wide">
+                <h4>Price</h4>
+                <h4>Quantity</h4>
               </span>
-              <span className="flex justify-between items-center">
-                <p className="text-3xl md:text-4xl font-semibold max-w-[180px] overflow-style">Rs. {product.price}</p>
-                <span className="text-2xl md:text-3xl font-semibold text-left max-w-[80px] overflow-style">{product.quantity}</span>
+              <span className="flex justify-between items-baseline">
+                <p className="text-3xl md:text-4xl text-[#1BDDF3]">Rs. {product.price}</p>
+                <span className="text-xl md:text-2xl font-medium">{product.quantity}</span>
               </span>
             </div>
-            <span className="flex flex-col gap-4 border-b-2">
-              <h4 className="uppercase text-gray-300 text-[14px] md:text-[16px]">Description</h4>
-              <p className="text-base mb-4 max-h-[250px] max-w-full overflow-y-auto border px-2 md:border-none">
+
+            <div className="flex flex-col gap-3">
+              <h4 className="text-xs uppercase tracking-wide text-[#F2EDE4]/45">Description</h4>
+              <p className="text-sm md:text-base text-[#F2EDE4]/75 leading-relaxed max-h-[250px] overflow-y-auto pr-2">
                 {product.description.split('\n').map((line, idx) => (
                   <React.Fragment key={idx}>
                     {line}
@@ -74,12 +79,13 @@ export default function SingleProductPage() {
                   </React.Fragment>
                 ))}
               </p>
-            </span>
+            </div>
+
             {role !== ROLES.ADMIN && (
               product.quantity > 0 ?
                 <Button
                   textValue="Add to cart"
-                  className="defaultButtonStyle w-full bg-orange-700 hover:bg-orange-600 hover:text-white"
+                  className="w-full h-[48px] bg-[#1BDDF3] text-[#0A0A0B] font-medium rounded-sm hover:bg-[#F2EDE4] transition-colors duration-150"
                   onClick={() => {
                     if (!isUserSignedIn) return setShowUserMenu(true);
                     addToCart({
@@ -92,7 +98,7 @@ export default function SingleProductPage() {
                       imagePath: product.imagePath,
                     })
                   }}
-                /> : <div className="text-3xl font-semibold text-center">Out of stock</div>
+                /> : <div className="text-xl md:text-2xl text-center text-[#F2EDE4]/50 py-3">Out of stock</div>
             )}
           </div>
         </div>
@@ -100,4 +106,3 @@ export default function SingleProductPage() {
     </FetchStatusDisplay>
   );
 }
-
