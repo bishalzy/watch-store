@@ -8,7 +8,6 @@ import Button from "../../../components/ui/Button/Button";
 import { addNewCategory, deleteCategory, updateCategory } from "../../../services/api/admin/adminCategoryAPI";
 import axios from "axios";
 import { CategoryDTO } from "../../../types/productType";
-import Loader from "../../../components/ui/Loader/Loader";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import ConfirmModal from "../../../components/ui/ConfirmModal/ConfirmModal";
@@ -138,12 +137,12 @@ export default function AdminProductCategory() {
 
   return (
     <ProfileContentContainer title="Product Category">
-      <div className="flex flex-col gap-20 w-full md:w-auto">
-        <div className="innerDivBackgroundColour shadow-black shadow-lg rounded-md md:px-20">
-          <h2 className="text-2xl text-white text-center py-4">Add New Category</h2>
+      <div className="flex flex-col gap-14 w-full md:w-auto p-4 md:p-8">
+        <div className="bg-[#111113] border border-[#F2EDE4]/10 rounded-sm px-4 md:px-16 py-8">
+          <h2 className="text-2xl text-white text-center mb-6">Add new category</h2>
           <Form handleFormSubmit={handleCategorySubmit}>
             <FormFieldWrapper
-              label="Product Category"
+              label="Category name"
               id="add-product-category"
               useVerticalLabelErrorStyle={true}
               error={error}
@@ -157,78 +156,81 @@ export default function AdminProductCategory() {
                 value={newCategory}
                 onChange={handleOnChange}
                 error={error}
+                className="bg-transparent border border-[#F2EDE4]/20 rounded-sm px-3 py-2 text-[#F2EDE4] placeholder:text-[#F2EDE4]/30 focus:outline-none focus:border-[#1BDDF3]"
               />
             </FormFieldWrapper>
-            <Button textValue="Submit" className="formButtonStyle w-[40%] self-center mt-5" />
+            <Button
+              textValue="Submit"
+              className="w-full md:w-[200px] self-center mt-5 py-2.5 bg-[#1BDDF3] text-[#0A0A0B] font-medium rounded-sm hover:bg-[#F2EDE4] transition-colors duration-150"
+            />
           </Form>
-
         </div>
-        <div className="innerDivBackgroundColour py-4 shadow-black shadow-lg rounded-md mb-10">
-          <h2 className="text-2xl text-white text-center py-4">Categories</h2>
+
+        <div className="bg-[#111113] border border-[#F2EDE4]/10 rounded-sm py-8 mb-10">
+          <h2 className="text-white text-2xl text-center mb-6">Categories</h2>
           <FetchStatusDisplay
             isLoading={isLoading}
             error={fetchCategoriesError}
             isEmpty={categories.length === 0}
             emptyMessage="No categories found"
             loadingIconSize={30}>
-            <ul className="md:w-full px-2 md:px-10 space-y-2 md:space-y-4">
+            <ul className="md:w-full px-4 md:px-10 space-y-2">
               {categories.map((category) => {
                 const isCategoryInUse: boolean = category.productCount > 0;
                 const inEditMode = editingCategoryID === category.id;
                 return (
                   <li
                     key={category.id}
-                    className="flex items-center justify-between border border-white/[.5] px-2 md:px-6 py-2 md:py-4 hover:shadow-lg hover:border-white hover:shadow-md hover:shadow-gray-400 duration-200"
+                    className="text-white flex items-center justify-between border border-[#F2EDE4]/10 rounded-sm px-3 md:px-6 py-3 md:py-4 hover:border-[#F2EDE4]/25 transition-colors duration-150"
                   >
                     {
                       inEditMode ? (
-                        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8">
-
-                          {
-                            <div className={`${updateError ? "flex flex-col gap-2" : "flex"}`}>
-                              <input
-                                value={editedCategoryName}
-                                autoFocus
-                                onChange={(e) => {
-                                  setEditedCategoryName(e.target.value);
-                                  if (updateError && e.target.value !== "") setUpdateError(null);
-                                  if (e.target.value === "") setUpdateError({ [category.id]: "Category name cannot be empty" });
-                                }}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Escape") {
-                                    setEditingCategoryID(null);
-                                    setUpdateError(null);
-                                  }
-                                  else if (e.key === "Enter") handleCategoryUpdate(category.id);
-                                }}
-                                className={`outline-none px-2 bg-transparent text-white 
-                                  ${updateError?.[category.id] ? "border-b-2 border-red-600" : "border-b-2 border-white"}`}
-                              />
-                              {updateError?.[category.id] && <span className="text-red-600 text-[13px] md:text-sm px-2">{updateError[category.id]}</span>}
-                            </div>
-                          }
-                          <div className="flex w-full">
-                            <button
-                              onClick={() => {
-                                handleCategoryUpdate(category.id)
+                        <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-6 w-full">
+                          <div className={`${updateError ? "flex flex-col gap-1" : "flex"}`}>
+                            <input
+                              value={editedCategoryName}
+                              autoFocus
+                              onChange={(e) => {
+                                setEditedCategoryName(e.target.value);
+                                if (updateError && e.target.value !== "") setUpdateError(null);
+                                if (e.target.value === "") setUpdateError({ [category.id]: "Category name cannot be empty" });
                               }}
-                              className="text-white hover:bg-[#1bddf3] hover:text-black px-2 rounded-sm duration-200 text-sm md:text-base">Save</button>
+                              onKeyDown={(e) => {
+                                if (e.key === "Escape") {
+                                  setEditingCategoryID(null);
+                                  setUpdateError(null);
+                                }
+                                else if (e.key === "Enter") handleCategoryUpdate(category.id);
+                              }}
+                              className={`outline-none px-1 py-1 bg-transparent text-[#F2EDE4] text-sm border-b
+                                ${updateError?.[category.id] ? "border-red-500" : "border-[#F2EDE4]/30 focus:border-[#1BDDF3]"}`}
+                            />
+                            {updateError?.[category.id] && <span className="text-red-400 text-xs mt-1">{updateError[category.id]}</span>}
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleCategoryUpdate(category.id)}
+                              className="text-xs border border-[#1BDDF3] text-[#1BDDF3] px-3 py-1 rounded-sm hover:bg-[#1BDDF3] hover:text-[#0A0A0B] transition-colors duration-150">
+                              Save
+                            </button>
                             <button
                               onClick={() => {
                                 setEditingCategoryID(null);
                                 setUpdateError(null);
                               }}
-                              className="text-white hover:bg-white hover:text-black px-2 rounded-sm duration-200 text-sm md:text-base">Cancel</button>
+                              className="text-xs border border-[#F2EDE4]/20 text-[#F2EDE4]/70 px-3 py-1 rounded-sm hover:border-[#F2EDE4]/40 hover:text-[#F2EDE4] transition-colors duration-150">
+                              Cancel
+                            </button>
                           </div>
                         </div>
                       ) :
                         <div className="flex flex-col">
-                          <span className="text-white font-medium md:text-lg">{category.categoryName}</span>
-                          <span className="text-gray-400 text-sm">Products in use: {category.productCount}</span>
+                          <span className="text-sm md:text-base">{category.categoryName}</span>
+                          <span className="text-[#F2EDE4]/40 text-xs mt-0.5">{category.productCount} product{category.productCount === 1 ? "" : "s"} using this</span>
                         </div>
                     }
 
-                    <div className="flex gap-[2px] md:gap-4">
+                    <div className="flex gap-1">
                       {!inEditMode &&
                         <button
                           onClick={() => {
@@ -236,7 +238,7 @@ export default function AdminProductCategory() {
                             setEditedCategoryName(category.categoryName);
                             setUpdateError(null);
                           }}
-                          className="text-white px-2 transition rounded-sm text-2xl md:text-3xl hover:bg-white hover:text-black">
+                          className="p-2 rounded-sm text-lg text-[#F2EDE4]/50 hover:text-[#1BDDF3] hover:bg-[#1BDDF3]/10 transition-colors duration-150">
                           <CiEdit />
                         </button>
                       }
@@ -248,15 +250,17 @@ export default function AdminProductCategory() {
                             setUpdateError(null);
                           }
                         }}
-                        className={`text-white px-2 transition rounded-sm text-2xl md:text-3xl 
-                        ${isCategoryInUse ? "cursor-not-allowed text-gray-400" : "hover:bg-red-600 hover:text-black"}`
-                        }><MdDeleteOutline /></button>
+                        title={isCategoryInUse ? "Remove all products from this category first" : undefined}
+                        className={`p-2 rounded-sm text-lg transition-colors duration-150
+                        ${isCategoryInUse ? "cursor-not-allowed text-[#F2EDE4]/20" : "text-[#F2EDE4]/50 hover:text-red-400 hover:bg-red-400/10"}`
+                        }>
+                        <MdDeleteOutline />
+                      </button>
                     </div>
                   </li>
                 )
               })}
             </ul>
-            )
           </FetchStatusDisplay>
         </div>
 
@@ -264,11 +268,9 @@ export default function AdminProductCategory() {
           showConfirmModal &&
           <ConfirmModal
             isOpen={true}
-            message={`Are you sure you want to delete "${categoryToDelete.categoryName} category"?`}
+            message={`Are you sure you want to delete "${categoryToDelete.categoryName}"?`}
             onConfirm={() => {
-              //handleProductDelete(productToDelete.id);
               handleCategoryDelete(categoryToDelete.id);
-              console.log("Deleted");
               setShowConfirmModal(false);
             }}
             onCancel={() => {
@@ -278,7 +280,6 @@ export default function AdminProductCategory() {
           />
         }
       </div>
-
     </ProfileContentContainer>
   )
 }

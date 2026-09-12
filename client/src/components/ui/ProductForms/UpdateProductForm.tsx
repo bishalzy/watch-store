@@ -123,51 +123,56 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
   }, [])
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-50">
+    <div className="fixed inset-0 flex justify-center items-center z-50 px-4">
       <Backdrop handleOnClick={handleFormClose} isVisible={isFormVisible} />
       <div
-        className={`relative w-full h-full overflow-y-auto md:w-auto md:h-auto innerDivBackgroundColour rounded-md border border-white/[.5] z-50 
-          ${isFormVisible ? "opacity-100" : "opacity-0"} duration-300`
+        className={`relative w-full max-w-[560px] max-h-[90dvh] overflow-y-auto bg-[#111113] rounded-sm border border-[#F2EDE4]/10 z-50 transition-all duration-300
+          ${isFormVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`
         }>
-        <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
-          <h2 className="w-full text-white justify-self-center text-2xl md:text-3xl font-semibold text-center">Update Product</h2>
-          <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200"
-            onClick={handleFormClose}>{<IoCloseOutline size={45} />}</button>
+        <div className="flex py-5 px-6 items-center justify-between border-b border-[#F2EDE4]/10 sticky top-0 bg-[#111113]">
+          <h2 className="text-xl md:text-2xl">Update product</h2>
+          <button
+            className="text-[#F2EDE4]/50 hover:text-red-400 transition-colors duration-150"
+            onClick={handleFormClose}>
+            <IoCloseOutline size={26} />
+          </button>
         </div>
-        <ProductForm
-          onSubmit={handleUpdateProductSubmit}
-          onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({
-            event: e,
-            values: {
+        <div className="px-6 md:px-10">
+          <ProductForm
+            onSubmit={handleUpdateProductSubmit}
+            onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({
+              event: e,
+              values: {
+                productName,
+                productPrice,
+                productCategory,
+                productDescription,
+                productQuantity,
+              },
+              dirtyField: dirtyField,
+              setStringError: setProductStringFormError,
+              clearStringError: clearProductStringFormError,
+              handleFieldOnChange,
+              validateFunction: validateProductFormStringFields
+            })}
+            onFileChange={(e) => handleFileUpload({
+              e,
+              validateFileFieldFunc: validateFileField,
+              setProductFormFileErrorFunc: setProductFileFormError,
+              isValidationError: isValidationError
+            })}
+            values={{
               productName,
               productPrice,
               productCategory,
               productDescription,
               productQuantity,
-            },
-            dirtyField: dirtyField,
-            setStringError: setProductStringFormError,
-            clearStringError: clearProductStringFormError,
-            handleFieldOnChange,
-            validateFunction: validateProductFormStringFields
-          })}
-          onFileChange={(e) => handleFileUpload({
-            e,
-            validateFileFieldFunc: validateFileField,
-            setProductFormFileErrorFunc: setProductFileFormError,
-            isValidationError: isValidationError
-          })}
-          values={{
-            productName,
-            productPrice,
-            productCategory,
-            productDescription,
-            productQuantity,
-          }}
-          stringFieldError={productStringErrorFields}
-          fileFieldError={productFileErrorFields}
-          generalError={generalError}
-        />
+            }}
+            stringFieldError={productStringErrorFields}
+            fileFieldError={productFileErrorFields}
+            generalError={generalError}
+          />
+        </div>
       </div>
     </div>
   )

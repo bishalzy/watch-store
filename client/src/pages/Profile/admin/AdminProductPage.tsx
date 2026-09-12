@@ -37,6 +37,7 @@ export default function AdminProductPage() {
   } = useProductStore();
 
   const [message, setMessage] = React.useState<string | null>(null);
+  const [fileInputKey, setFileInputKey] = React.useState<number>(0);
 
   async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -69,8 +70,10 @@ export default function AdminProductPage() {
     if (response) {
       setMessage("Product added successfully!");
       clearProductFormFieldsValues();
+      setFileInputKey((k) => k + 1);
     }
   }
+
 
   React.useEffect(() => {
     clearProductStringFormError();
@@ -79,8 +82,9 @@ export default function AdminProductPage() {
 
   return (
     <ProfileContentContainer title="Add Product">
-      <div className="innerDivBackgroundColour shadow-lg shadow-black rounded-md px-4 md:px-10 lg:px-20 w-full md:w-auto mb-20">
+      <div className="bg-[#111113] border border-[#F2EDE4]/10 rounded-sm px-4 md:px-10 lg:px-16 py-8 md:py-12 w-full md:w-auto mb-20">
         <ProductForm
+          key={fileInputKey}
           onSubmit={handleAddProductSubmit}
           onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({
             event: e,

@@ -33,10 +33,9 @@ export default function ProductForm({
   buttonTextValue = "Submit"
 }: ProductFormProps) {
   return (
-
-    <Form handleFormSubmit={onSubmit} className="md:gap-[2rem] relative">
+    <Form handleFormSubmit={onSubmit} className="flex flex-col gap-6 md:gap-8 relative py-4">
       <FormFieldWrapper
-        label="Product Name"
+        label="Product name"
         id="product-name"
         useVerticalLabelErrorStyle={true}
         error={stringFieldError.productName}
@@ -49,10 +48,12 @@ export default function ProductForm({
           value={values.productName}
           onChange={(e) => onChange(e)}
           error={stringFieldError.productName}
+          className="bg-transparent border border-[#F2EDE4]/20 rounded-sm px-3 py-2 text-[#F2EDE4] placeholder:text-[#F2EDE4]/30 focus:outline-none focus:border-[#1BDDF3]"
         />
       </FormFieldWrapper>
+
       <FormFieldWrapper
-        label="Product Price"
+        label="Product price"
         id="product-price"
         useVerticalLabelErrorStyle={true}
         error={stringFieldError.productPrice}
@@ -65,22 +66,16 @@ export default function ProductForm({
           value={values.productPrice}
           onChange={(e) => onChange(e)}
           error={stringFieldError.productPrice}
+          className="bg-transparent border border-[#F2EDE4]/20 rounded-sm px-3 py-2 text-[#F2EDE4] placeholder:text-[#F2EDE4]/30 focus:outline-none focus:border-[#1BDDF3]"
         />
       </FormFieldWrapper>
+
       <FormFieldWrapper
-        label="Product Category"
+        label="Product category"
         id="product-category"
         useVerticalLabelErrorStyle={true}
         error={stringFieldError.productCategory}
         positionRow={true}>
-        {/*<Input
-          id="product-category"
-          name="productCategory"
-          placeholder="Digital Watch"
-          value={values.productCategory}
-          onChange={(e) => onChange(e)}
-          error={stringFieldError.productCategory}
-        />*/}
         <SelectField
           id="product-category"
           name="productCategory"
@@ -88,10 +83,12 @@ export default function ProductForm({
           value={values.productCategory}
           onChange={(e) => onChange(e)}
           error={stringFieldError.productCategory}
+          className="bg-[#0A0A0B] border border-[#F2EDE4]/20 rounded-sm px-3 py-2 text-[#F2EDE4] focus:outline-none focus:border-[#1BDDF3]"
         />
       </FormFieldWrapper>
+
       <FormFieldWrapper
-        label="Product Description"
+        label="Product description"
         id="product-description"
         useVerticalLabelErrorStyle={true}
         error={stringFieldError.productDescription}
@@ -103,10 +100,12 @@ export default function ProductForm({
           value={values.productDescription}
           onChange={(e) => onChange(e)}
           error={stringFieldError.productDescription}
+          className="w-full bg-transparent border border-[#F2EDE4]/20 rounded-sm px-3 py-2 text-[#F2EDE4] placeholder:text-[#F2EDE4]/30 focus:outline-none focus:border-[#1BDDF3] min-h-[120px]"
         />
       </FormFieldWrapper>
+
       <FormFieldWrapper
-        label="Product Quantity"
+        label="Product quantity"
         id="product-quantity"
         useVerticalLabelErrorStyle={true}
         error={stringFieldError.productQuantity}
@@ -119,10 +118,12 @@ export default function ProductForm({
           value={values.productQuantity}
           onChange={(e) => onChange(e)}
           error={stringFieldError.productQuantity}
+          className="bg-transparent border border-[#F2EDE4]/20 rounded-sm px-3 py-2 text-[#F2EDE4] placeholder:text-[#F2EDE4]/30 focus:outline-none focus:border-[#1BDDF3]"
         />
       </FormFieldWrapper>
+
       <FormFieldWrapper
-        label="Upload Product Image"
+        label="Upload product image"
         id="product-image"
         useVerticalLabelErrorStyle={true}
         error={fileFieldError.productImage}
@@ -136,12 +137,17 @@ export default function ProductForm({
           type="file"
           onChange={onFileChange}
           error={fileFieldError.productImage}
+          className="w-full text-sm text-[#F2EDE4]/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border file:border-[#F2EDE4]/20 file:bg-transparent file:text-[#F2EDE4]/70 file:text-sm hover:file:border-[#1BDDF3] hover:file:text-[#1BDDF3] file:transition-colors file:duration-150"
         />
       </FormFieldWrapper>
 
-      {generalError && <ErrorMessage message={generalError} className="absolute text-center" />}
+      {generalError && <ErrorMessage message={generalError} className="absolute -top-6 left-0 right-0 text-center" />}
       {onSuccessMessage && <SuccessMessage message={onSuccessMessage} />}
-      <Button className="formButtonStyle w-[40%] self-center lg:mt-4" textValue={buttonTextValue} />
+
+      <Button
+        className="w-full md:w-[240px] self-center mt-2 py-2.5 bg-[#1BDDF3] text-[#0A0A0B] font-medium rounded-sm hover:bg-[#F2EDE4] transition-colors duration-150"
+        textValue={buttonTextValue}
+      />
     </Form>
   )
 }
