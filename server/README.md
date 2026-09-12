@@ -82,7 +82,7 @@ The backend follows a layered REST API architecture:
 
 ##### `config/`
 - [`EnvConfig.java`](./src/main/java/com/watchstore/server/config/EnvConfig.java): Reads `.env` variables and populates system properties (including `GEMINI_KEY`).
-- [`SecurityConfig.java`](./src/main/java/com/watchstore/server/config/SecurityConfig.java): Configures the Spring Security filter chain, JWT verification, and endpoint access permissions (e.g., permits public access to `/api/chat/**`, `/images/**`, `/api/checkout`).
+- [`SecurityConfig.java`](./src/main/java/com/watchstore/server/config/SecurityConfig.java): Configures the Spring Security filter chain, JWT verification, and endpoint access permissions (e.g., permits public access to `/api/chat/**`, `/api/products/**`, `/api/checkout`).
 - [`JacksonConfig.java`](./src/main/java/com/watchstore/server/config/JacksonConfig.java): Provides `ObjectMapper` bean for serializing and deserializing JSON payloads.
 
 ##### `controller/`

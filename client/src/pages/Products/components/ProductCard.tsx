@@ -2,10 +2,14 @@ import { Link } from "react-router-dom";
 import Button from "../../../components/ui/Button/Button";
 import { ROLES } from "../../../utils/constants";
 import { ProductDTO } from "../../../types/productType";
+import { getProductImageUrl } from "../../../utils/imageUtil";
+import { IoSparkles } from "react-icons/io5";
 
 type ProductCardProps = {
   product: ProductDTO;
   role: string;
+  isRecommended?: boolean;
+  matchPercentage?: string;
   setShowUpdateProductForm: (show: boolean) => void;
   setSelectedProduct: (product: ProductDTO) => void;
   setShowConfirmModal: (show: boolean) => void;
@@ -15,6 +19,8 @@ type ProductCardProps = {
 export function ProductCard({
   product,
   role,
+  isRecommended = false,
+  matchPercentage,
   setShowUpdateProductForm,
   setSelectedProduct,
   setShowConfirmModal,
@@ -52,7 +58,19 @@ export function ProductCard({
       }
 
       <Link to={`/product/${product.id}`}>
-        <div className="h-[380px] md:h-[460px] flex flex-col bg-[#111113] group border border-[#F2EDE4]/10 rounded-sm hover:border-[#F2EDE4]/30 transition-colors duration-200">
+        <div
+          className={`relative h-[380px] md:h-[460px] flex flex-col bg-[#111113] group border rounded-sm transition-colors duration-200 ${
+            isRecommended
+              ? "border-[#1BDDF3]/30 hover:border-[#1BDDF3]"
+              : "border-[#F2EDE4]/10 hover:border-[#F2EDE4]/30"
+          }`}
+        >
+          {isRecommended && matchPercentage && (
+            <div className="absolute top-3 right-3 z-10 flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-[#1BDDF3]/15 text-[#1BDDF3] border border-[#1BDDF3]/30">
+              <IoSparkles size={12} /> {matchPercentage} match
+            </div>
+          )}
+
           <div className="flex justify-between pt-4 px-4 items-start gap-2">
             <div className="flex flex-col gap-1 min-w-0">
               <h1
@@ -70,7 +88,7 @@ export function ProductCard({
 
           <img
             className="h-[250px] md:h-[330px] object-contain w-full py-2 scale-90 group-hover:scale-[0.95] transition-transform duration-300 ease-out"
-            src={`http://localhost:5000/images/${product.imagePath}`}
+            src={getProductImageUrl(`http://localhost:5000/images/${product.imagePath}`)}
             alt={product.name}
           />
 
@@ -88,4 +106,4 @@ export function ProductCard({
       </Link>
     </div>
   );
-};
+}

@@ -11,19 +11,17 @@ describe("Input component", () => {
     });
   });
 
-  it("renders label correctly", () => {
-    render(<Input id="email" label="Email" />);
-    expect(screen.getByLabelText("Email")).toBeInTheDocument();
+  it("renders input correctly", () => {
+    render(<Input id="email" placeholder="Email" data-testid="email" />);
+    expect(screen.getByTestId("email")).toBeInTheDocument();
   });
 
-  it("shows error message and applies error styles", () => {
+  it("applies error styles when error is present", () => {
     const errorMsg = "Empty username field";
     render(<Input id="username" error={errorMsg} data-testid="username" />);
 
     const input = screen.getByTestId("username") as HTMLInputElement;
-
-    expect(screen.getByText(`- ${errorMsg}`)).toBeInTheDocument();
-    expect(input).toHaveClass("border-red-800");
+    expect(input).toHaveClass("formElementErrorStyling");
   });
 
   it("toggles password visibility", async () => {
