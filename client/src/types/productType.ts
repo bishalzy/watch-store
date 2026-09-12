@@ -55,3 +55,9 @@ export interface CategoryDTO {
   categoryName: string;
   productCount: number;
 }
+
+export interface RecommendedProductDTO extends ProductDTO {
+  matchScore: number;
+  matchPercentage: string;
+}
+

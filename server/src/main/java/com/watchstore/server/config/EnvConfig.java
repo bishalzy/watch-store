@@ -3,35 +3,75 @@ package com.watchstore.server.config;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class EnvConfig {
+
+  private static String getEnv(Dotenv dotenv, String key) {
+    String val = null;
+    if (dotenv != null) {
+      try {
+        val = dotenv.get(key);
+      } catch (Exception ignored) {
+      }
+    }
+    if (val == null || val.trim().isEmpty()) {
+      val = System.getenv(key);
+    }
+    return (val != null && !val.trim().isEmpty()) ? val.trim() : null;
+  }
+
+  private static void setPropertyIfPresent(String propertyKey, String value) {
+    if (value != null && !value.trim().isEmpty()) {
+      System.setProperty(propertyKey, value.trim());
+    }
+  }
+
   public static void loadEnv() {
-    Dotenv dotenv = Dotenv.configure()
-        .ignoreIfMalformed()
-        .ignoreIfMissing()
-        .load();
-    System.setProperty("spring.datasource.url", dotenv.get("DB_URL"));
-    System.setProperty("spring.datasource.username", dotenv.get("DB_USERNAME"));
-    System.setProperty("spring.datasource.password", dotenv.get("DB_PASSWORD"));
-    System.setProperty("app.admin.email", dotenv.get("ADMIN_EMAIL"));
-    System.setProperty("app.admin.username", dotenv.get("ADMIN_USERNAME"));
-    System.setProperty("app.admin.password", dotenv.get("ADMIN_PASSWORD"));
-    System.setProperty("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
-    System.setProperty("SECURE_COOKIE", dotenv.get("SECURE_COOKIE"));
-    System.setProperty("khalti.secret-key", dotenv.get("KHALTI_SECRET_KEY"));
-    System.setProperty("khalti.base-url", dotenv.get("KHALTI_BASE_URL"));
-    System.setProperty("khalti.return-url", dotenv.get("KHALTI_RETURN_URL"));
-    System.setProperty("khalti.website-url", dotenv.get("KHALTI_WEBSITE_URL"));
+    Dotenv dotenv = null;
+    try {
+      dotenv = Dotenv.configure()
+          .ignoreIfMalformed()
+          .ignoreIfMissing()
+          .load();
+    } catch (Exception ignored) {
+    }
+
+    String dbUrl = getEnv(dotenv, "DB_URL");
+    if (dbUrl != null) {
+      if (dbUrl.startsWith("mysql://") || dbUrl.startsWith("mariadb://")) {
+        dbUrl = "jdbc:" + dbUrl;
+      }
+      setPropertyIfPresent("spring.datasource.url", dbUrl);
+    }
+    setPropertyIfPresent("spring.datasource.username", getEnv(dotenv, "DB_USERNAME"));
+    setPropertyIfPresent("spring.datasource.password", getEnv(dotenv, "DB_PASSWORD"));
+    setPropertyIfPresent("app.admin.email", getEnv(dotenv, "ADMIN_EMAIL"));
+    setPropertyIfPresent("app.admin.username", getEnv(dotenv, "ADMIN_USERNAME"));
+    setPropertyIfPresent("app.admin.password", getEnv(dotenv, "ADMIN_PASSWORD"));
+    setPropertyIfPresent("JWT_SECRET_KEY", getEnv(dotenv, "JWT_SECRET_KEY"));
+    setPropertyIfPresent("SECURE_COOKIE", getEnv(dotenv, "SECURE_COOKIE"));
+    setPropertyIfPresent("khalti.secret-key", getEnv(dotenv, "KHALTI_SECRET_KEY"));
+    setPropertyIfPresent("khalti.base-url", getEnv(dotenv, "KHALTI_BASE_URL"));
+    setPropertyIfPresent("khalti.return-url", getEnv(dotenv, "KHALTI_RETURN_URL"));
+    setPropertyIfPresent("khalti.website-url", getEnv(dotenv, "KHALTI_WEBSITE_URL"));
+    setPropertyIfPresent("client.url", getEnv(dotenv, "CLIENT_URL"));
     System.setProperty("spring.jpa.hibernate.ddl-auto", "update");
-    if (dotenv.get("GEMINI_KEY") != null) {
-      System.setProperty("GEMINI_KEY", dotenv.get("GEMINI_KEY"));
-    }
-    if (dotenv.get("GEMINI_MODELS") != null) {
-      System.setProperty("GEMINI_MODELS", dotenv.get("GEMINI_MODELS"));
-    }
-    if (dotenv.get("GEMINI_MODEL") != null) {
-      System.setProperty("GEMINI_MODEL", dotenv.get("GEMINI_MODEL"));
-    }
-    if (dotenv.get("UPLOAD_DIR") != null) {
-      System.setProperty("app.upload.dir", dotenv.get("UPLOAD_DIR"));
-    }
+
+    setPropertyIfPresent("GEMINI_KEY", getEnv(dotenv, "GEMINI_KEY"));
+    setPropertyIfPresent("GEMINI_MODELS", getEnv(dotenv, "GEMINI_MODELS"));
+    setPropertyIfPresent("GEMINI_MODEL", getEnv(dotenv, "GEMINI_MODEL"));
+
+    String cloudName = getEnv(dotenv, "CLOUDINARY_CLOUD_NAME") != null 
+        ? getEnv(dotenv, "CLOUDINARY_CLOUD_NAME") 
+        : getEnv(dotenv, "CLOUDNARY_CLOUD_NAME");
+    setPropertyIfPresent("cloudinary.cloud-name", cloudName);
+
+    String apiKey = getEnv(dotenv, "CLOUDINARY_API_KEY") != null 
+        ? getEnv(dotenv, "CLOUDINARY_API_KEY") 
+        : getEnv(dotenv, "CLOUDNARY_API_KEY");
+    setPropertyIfPresent("cloudinary.api-key", apiKey);
+
+    String apiSecret = getEnv(dotenv, "CLOUDINARY_API_SECRET") != null 
+        ? getEnv(dotenv, "CLOUDINARY_API_SECRET") 
+        : getEnv(dotenv, "CLOUDNARY_API_SECRET");
+    setPropertyIfPresent("cloudinary.api-secret", apiSecret);
   }
 }
