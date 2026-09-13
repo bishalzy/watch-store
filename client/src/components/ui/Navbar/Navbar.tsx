@@ -172,7 +172,7 @@ export default function Navbar() {
         ref={bottomNavbarRef}>
         <button onClick={scrollToTop} className="flex items-center gap-2">
           <span className="bg-[#1BDDF3] w-4 h-4 lg:w-5 lg:h-5 block"></span>
-          <span className="font-serif tracking-wide text-[#F2EDE4] md:text-2xl">WS</span>
+          <span className="tracking-wide text-[#F2EDE4] md:text-2xl">WS</span>
         </button>
         <div className="flex w-full px-4 justify-end md:justify-center md:px-0">
           <div className="flex gap-2 md:gap-[8rem]">

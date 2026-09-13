@@ -88,7 +88,7 @@ export function ProductCard({
 
           <img
             className="h-[250px] md:h-[330px] object-contain w-full py-2 scale-90 group-hover:scale-[0.95] transition-transform duration-300 ease-out"
-            src={getProductImageUrl(`http://localhost:5000/images/${product.imagePath}`)}
+            src={getProductImageUrl(product.imagePath)}
             alt={product.name}
           />
 

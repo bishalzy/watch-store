@@ -58,7 +58,7 @@ export default function AIChatProductCard({ product }: AIChatProductCardProps) {
       >
         <div className="w-16 h-16 bg-[#1a1a1a] rounded-sm p-1 flex items-center justify-center flex-shrink-0 border border-white/20 overflow-hidden">
           <img
-            src={getProductImageUrl(`http://localhost:5000/images/${product.imagePath}`)}
+            src={getProductImageUrl(product.imagePath)}
             alt={product.name}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
             onError={(e) => {

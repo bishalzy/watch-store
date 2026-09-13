@@ -62,7 +62,7 @@ export default function SingleProductPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start text-[#F2EDE4] bg-[#0A0A0B] px-4 md:component-x-axis-padding py-8 md:py-14">
             <div className="w-[480px] aspect-square md:aspect-[4/5] rounded-sm flex items-center justify-center overflow-hidden">
               <img
-                src={getProductImageUrl(`http://localhost:5000/images/${product.imagePath}`)}
+                src={getProductImageUrl(product.imagePath)}
                 alt={product.name}
                 className="w-full h-full object-contain p-6 md:p-10"
               />
