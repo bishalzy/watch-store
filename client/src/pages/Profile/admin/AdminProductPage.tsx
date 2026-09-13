@@ -13,11 +13,13 @@ import {
 import { addProduct } from "../../../services/api/admin/adminProductAPI";
 import ProductForm from "../../../components/ui/ProductForms/ProductForm";
 import useProductForm from "../../../hooks/useProductForm";
+import { useUIStore } from "../../../store/uiStore";
 
 export default function AdminProductPage() {
   const { isValidationError, handleFieldOnChange, dirtyField, handleFormSubmit, generalError, setGeneralError } =
     useForm<DirtyFieldState<ProductFormFields>>(initialProductDirtyFieldState);
   const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm(useProductStore.getState());
+  const isLoading = useUIStore((state) => state.isLoading);
 
   const {
     productName,
@@ -112,6 +114,8 @@ export default function AdminProductPage() {
           fileFieldError={productFileErrorFields}
           generalError={generalError}
           onSuccessMessage={message}
+          isLoading={isLoading}
+          isLoadingTextValue="Adding..."
         />
       </div>
     </ProfileContentContainer>

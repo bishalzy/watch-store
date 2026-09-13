@@ -42,6 +42,7 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
 
   const showUpdateProductForm = useUIStore((state) => state.showUpdateProductForm);
   const setShowUpdateProductForm = useUIStore((state) => state.setShowUpdateProductForm);
+  const isLoading = useUIStore((state) => state.isLoading);
 
   function handleFormClose() {
     setIsFormVisible(false);
@@ -171,6 +172,8 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
             stringFieldError={productStringErrorFields}
             fileFieldError={productFileErrorFields}
             generalError={generalError}
+            isLoading={isLoading}
+            isLoadingTextValue="Updating..."
           />
         </div>
       </div>

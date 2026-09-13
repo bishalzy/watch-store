@@ -19,6 +19,8 @@ interface ProductFormProps {
   generalError?: string | null;
   buttonTextValue?: string
   onSuccessMessage?: string | null;
+  isLoading: boolean;
+  isLoadingTextValue?: string;
 }
 
 export default function ProductForm({
@@ -30,7 +32,9 @@ export default function ProductForm({
   fileFieldError,
   generalError,
   onSuccessMessage,
-  buttonTextValue = "Submit"
+  buttonTextValue = "Submit",
+    isLoading,
+  isLoadingTextValue,
 }: ProductFormProps) {
   return (
     <Form handleFormSubmit={onSubmit} className="flex flex-col gap-6 md:gap-8 relative py-4">
@@ -146,7 +150,7 @@ export default function ProductForm({
 
       <Button
         className="w-full md:w-[240px] self-center mt-2 py-2.5 bg-[#1BDDF3] text-[#0A0A0B] font-medium rounded-sm hover:bg-[#F2EDE4] transition-colors duration-150"
-        textValue={buttonTextValue}
+        textValue={isLoading ? isLoadingTextValue : buttonTextValue}
       />
     </Form>
   )
