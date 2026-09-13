@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useUserStore } from "../../../store/userStore";
+import { useUIStore } from "../../../store/uiStore";
 import { ROLES } from "../../../utils/constants";
 
 export default function UserProfileMenu() {
   const role = useUserStore((state) => state.role);
+  const navbarHeight = useUIStore((state) => state.navbarHeight);
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -12,7 +14,10 @@ export default function UserProfileMenu() {
 
   return (
     <div className="flex w-full md:w-[240px] bg-[#111113] border-b md:border-b-0 md:border-r border-[#F2EDE4]/10">
-      <div className="flex md:flex-col w-full items-center text-[13px] md:pt-6">
+      <div
+        className="flex md:flex-col w-full items-center text-[13px] md:pt-6 md:self-start md:sticky"
+        style={{ top: navbarHeight }}
+      >
         <NavLink to={"."} end className={linkClass}>
           My Account
         </NavLink>
