@@ -21,12 +21,13 @@ export function Cart() {
     <>
       <SidePanelContainer
         panelTitle={`${cartItems.length > 1 ? "Items" : "Item"} - ${cartItems.length}`}
-        className="w-[520px] flex flex-col"
+        className="w-[520px] flex flex-col bg-[#0A0A0B] text-[#F2EDE4]"
         closeSidePanel={closeSidePanel}
       >
         {cartItems.length === 0 ? (
-          <div className="m-auto h-full flex flex-col justify-center items-center gap-[30px]">
-            <h1 className="text-[25px] font-bold tracking-widest">YOUR CART IS EMPTY</h1>
+          <div className="m-auto h-full flex flex-col justify-center items-center gap-3">
+            <h1 className="font-serif text-2xl text-[#F2EDE4]/80">Your cart is empty</h1>
+            <p className="text-sm text-[#F2EDE4]/45">Items you add will show up here.</p>
           </div>
         ) : (
           <div className="flex flex-col h-full">
@@ -34,42 +35,45 @@ export function Cart() {
               {
                 cartItems.map((item) => {
                   return (
-                    <div className="flex md:px-4 py-2 border-b border-white/[.5]" key={item.id}>
-                      <img
-                        src={getProductImageUrl(item.imagePath)}
-                        className="w-40 h-[80px] md:w-40 md:h-[120px] object-contain"
-                      />
+                    <div className="flex gap-4 px-4 py-4 border-b border-[#F2EDE4]/10" key={item.id}>
+                      <div className="w-[110px] h-[110px] md:w-[130px] md:h-[130px] bg-[#111113] rounded-sm flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <img
+                          src={getProductImageUrl(item.imagePath)}
+                          className="w-full h-full object-contain p-2"
+                        />
+                      </div>
                       <div className="grid grid-cols-2 md:grid-cols-[2fr_1fr] w-full gap-2">
-                        <div className="flex flex-col h-full justify-between w-[250px] overflow-style">
-                          <h1 className="text-white font-semibold text-[18px] md:text-2xl max-w-[250px] overflow-style">{item.name}</h1>
-                          <span className="text-gray-400 text-[12px] md:text-sm">{item.category}</span>
-                          <div className="flex gap-2 items-end overflow-style">
-                            <span className="md:text-2xl font-semibold">Rs. {item.price * item.quantity}</span>
-                            <span className="text-[12px] md:text-sm text-gray-400">Rs. {item.price} per unit</span>
+                        <div className="flex flex-col h-full justify-between min-w-0">
+                          <div>
+                            <h1 className="text-base md:text-lg truncate" title={item.name}>{item.name}</h1>
+                            <span className="text-[#F2EDE4]/45 text-xs uppercase tracking-wide">{item.category}</span>
+                          </div>
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-lg md:text-xl text-[#1BDDF3]">Rs. {item.price * item.quantity}</span>
+                            <span className="text-xs text-[#F2EDE4]/40">Rs. {item.price} per unit</span>
                           </div>
                         </div>
-                        <div className="flex flex-col pr-2 md:pr-0">
-                          <div className="flex justify-end">
-                            <button
-                              onClick={() => removeFromCart(item.id)}
-                              className="text-red-600 text-2xl">
-                              <MdDeleteOutline />
-                            </button>
-                          </div>
-                          <div className="flex justify-end items-center h-full">
-                            <div className="border border-white/[.2] w-[80px] md:w-full flex justify-between h-[50%] items-center">
+                        <div className="flex flex-col items-end justify-between">
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-[#F2EDE4]/40 hover:text-red-400 transition-colors duration-150 text-lg">
+                            <MdDeleteOutline />
+                          </button>
+
+                          <div className="flex flex-col items-end gap-2">
+                            <div className="flex items-center border border-[#F2EDE4]/15 rounded-sm h-8">
                               <button
                                 onClick={() => {
-                                  if (item.quantity < item.availableStock) {
-                                    updateQuantity(item.id, item.quantity + 1);
+                                  if (item.quantity > 1) {
+                                    updateQuantity(item.id, item.quantity - 1);
                                   }
                                 }}
-                                className="border-r border-white/[.2] w-4 md:w-8 hover:bg-white hover:text-black font-bold md:text-2xl duration-200 md:h-full">+</button>
+                                className="w-7 h-full text-[#F2EDE4]/60 hover:text-[#1BDDF3] transition-colors duration-150 text-sm">-</button>
                               <input
                                 type="number"
                                 min={1}
                                 value={item.quantity}
-                                className="w-[30px] md:w-[40px] text-center bg-transparent outline-none focus:outline-[1px] focus:outline-white"
+                                className="w-9 text-center bg-transparent outline-none text-sm"
                                 onChange={(e) => {
                                   const quantityValue = parseInt(e.target.value);
                                   if (!isNaN(quantityValue) && quantityValue > 0 && quantityValue <= item.availableStock) {
@@ -79,14 +83,14 @@ export function Cart() {
                               />
                               <button
                                 onClick={() => {
-                                  if (item.quantity > 1) {
-                                    updateQuantity(item.id, item.quantity - 1);
+                                  if (item.quantity < item.availableStock) {
+                                    updateQuantity(item.id, item.quantity + 1);
                                   }
                                 }}
-                                className="border-l border-white/[.2] w-4 md:w-8 hover:bg-white hover:text-black font-bold md:text-2xl duration-200 md:h-full">-</button>
+                                className="w-7 h-full text-[#F2EDE4]/60 hover:text-[#1BDDF3] transition-colors duration-150 text-sm">+</button>
                             </div>
+                            <span className="text-[11px] text-[#F2EDE4]/35">{item.availableStock - item.quantity} left</span>
                           </div>
-                          <span className="text-white font-bold text-[14px] md:mx-auto text-right">Available: {item.availableStock - item.quantity}</span>
                         </div>
                       </div>
                     </div>
@@ -94,10 +98,10 @@ export function Cart() {
                 })
               }
             </div>
-            <div className="p-4 border-t border-white/[.5] bg-black h-[80px] flex items-center">
+            <div className="p-4 border-t border-[#F2EDE4]/10 bg-[#0A0A0B] h-[76px] flex items-center">
               <Button
                 textValue="Checkout"
-                className="defaultButtonStyle bg-orange-600 text-white font-semibold w-full left-0 hover:bg-orange-500"
+                className="w-full h-[44px] bg-[#1BDDF3] text-[#0A0A0B] font-medium rounded-sm hover:bg-[#F2EDE4] transition-colors duration-150"
                 onClick={handleCheckout}
               />
             </div>
